@@ -54,7 +54,7 @@ export function IncidentsProvider({ children }) {
                 .from(TABLE)
                 .select('*')
             // TODO: handle `error` here — currently silently ignored if fetch fails
-            setIncidents(data)
+            setIncidents(data || []) // siva_test
         } catch (error) {
             console.log('fetchIncidents:', error.message)
         }
