@@ -31,6 +31,7 @@ const Resources = () => {
         const { data, error } = await supabase
             .from('emergency_contacts')
             .select('*')
+            .eq('user_id', user.id)
             .order('created_at', { ascending: false });
         if (error) Alert.alert('Error', error.message);
         else setContacts(data || []);
