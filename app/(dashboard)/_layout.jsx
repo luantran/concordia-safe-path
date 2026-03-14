@@ -10,33 +10,28 @@ import {useSafeAreaInsets} from "react-native-safe-area-context";
 import IncidentTypeModal from "../../components/modals/IncidentTypeModal";
 import {useState} from "react";
 import OfflineBanner from "../../components/offline/OfflineBanner";
-
 const TAB_BAR_PADDING_TOP = 10
-
-
 export default function DashboardLayout() {
     const colorScheme = useColorScheme()
     const theme = Colors[colorScheme] ?? Colors.light
     const [typeModalOpen, setTypeModalOpen] = useState(false)
-
     const router = useRouter()
     const insets = useSafeAreaInsets()
     const pathname = usePathname()
     const { profile } = useUser()
-
     // hide header/tabs when user is on preferences for the first time
     const isOnboarding = pathname === '/menu/preferences' && !profile?.preferences_completed
-
-
+    // hide the global hamburger header on pages that have their own custom header
+    const hideHeader = isOnboarding || pathname === '/menu/resources' || pathname === '/menu/preferences'
     return (
         <UserOnly>
             <ThemedView style={{ flex: 1 }}>
-                {!isOnboarding && <ThemedHeader />}
+                {!hideHeader && <ThemedHeader />}
                 <OfflineBanner />
                 <Tabs
                     screenOptions={{
                         headerShown: false,
-                        // tabBarStyle: { backgroundColor: 'blue', paddingTop: TAB_BAR_PADDING_TOP, height: insets.bottom + 65},
+                        // tabBarStyle: { backgroundColor: 'blue', paddingTop: TAB_BAR_PADDING_TOP, height: insets.bottom + 65},                        
                         tabBarStyle: isOnboarding ? { display: 'none' } : { backgroundColor: theme.navBackground, paddingTop: 10, height: 100 },
                         tabBarActiveTintColor: theme.iconColorFocused,
                         tabBarInactiveTintColor: theme.iconColor,
@@ -54,7 +49,6 @@ export default function DashboardLayout() {
                                 />
                             ) }}
                     />
-
                     <Tabs.Screen
                         name="map"
                         options={{
@@ -96,9 +90,7 @@ export default function DashboardLayout() {
                         name="routes"
                         options={{ href: null }}
                     />
-
                 </Tabs>
-
                 <IncidentTypeModal
                     visible={typeModalOpen}
                     onClose={() => setTypeModalOpen(false)}
@@ -123,13 +115,10 @@ export default function DashboardLayout() {
                         <Ionicons name="warning" size={30} color={Colors.attention} />
                     </TouchableOpacity>
                 )}
-
             </ThemedView>
-
         </UserOnly>
     )
 }
-
 const styles = StyleSheet.create({
     emergencyFab: {
         position: 'absolute',
@@ -157,7 +146,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primaryDark,
         justifyContent: 'center',
         alignItems: 'center',
-        elevation: 5,      // android shadow
+        elevation: 5, // android shadow
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
