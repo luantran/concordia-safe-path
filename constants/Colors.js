@@ -63,4 +63,10 @@ export const Colors = {
     divider:              '#59A7E733', // subtle separator line
     white:                '#fff',
     black:                '#000',
+
+    severityFill: {
+    low: "rgba(0,200,0,0.2)",
+    medium: "rgba(255,200,0,0.2)",
+    high: "rgba(255,0,0,0.2)"
+  },
 }
