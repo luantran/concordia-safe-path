@@ -38,7 +38,7 @@ export default function DashboardLayout() {
     return (
         <UserOnly>
             <ThemedView style={{ flex: 1 }}>
-                {!hideHeader && <ThemedHeader />}
+                <ThemedHeader />
                 <OfflineBanner />
                 <Tabs
                     screenOptions={{
