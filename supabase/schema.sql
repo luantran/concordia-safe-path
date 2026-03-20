@@ -39,8 +39,8 @@ create table if not exists profiles (
     -- Notification preferences (added for preferences page)
     dark_mode               boolean default false,
     accessibility_routing   boolean default false,
-    distance_normal         int default 500,
-    distance_silent         int default 1000,
+    distance_normal         int default 100,
+    distance_silent         int default 150,
     notif_protest           text default 'normal' check (notif_protest in ('normal', 'silent', 'muted')),
     notif_road              text default 'normal' check (notif_road in ('normal', 'silent', 'muted')),
     notif_construction      text default 'normal' check (notif_construction in ('normal', 'silent', 'muted')),
@@ -53,12 +53,14 @@ alter table profiles enable row level security;
 -- Add new columns if they don't exist yet (safe to re-run)
 alter table profiles add column if not exists dark_mode boolean default false;
 alter table profiles add column if not exists accessibility_routing boolean default false;
-alter table profiles add column if not exists distance_normal int default 500;
-alter table profiles add column if not exists distance_silent int default 1000;
+alter table profiles add column if not exists distance_normal int default 100;
+alter table profiles add column if not exists distance_silent int default 150;
 alter table profiles add column if not exists notif_protest text default 'normal';
 alter table profiles add column if not exists notif_road text default 'normal';
 alter table profiles add column if not exists notif_construction text default 'normal';
 alter table profiles add column if not exists notif_vandalism text default 'normal';
+alter table profiles add column if not exists distance_normal_enabled boolean default true;
+alter table profiles add column if not exists distance_silent_enabled boolean default true;
 
 -- Drop and recreate policies to ensure they are always up to date
 drop policy if exists "Users can view own profile" on profiles;

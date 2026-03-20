@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { StyleSheet, View, Alert, Switch, TouchableOpacity, Text, ScrollView, BackHandler } from 'react-native';
+import {StyleSheet, View, Alert, Switch, TouchableOpacity, Text, ScrollView, BackHandler, Modal} from 'react-native';
 import { useRouter, Stack } from 'expo-router';
 import Slider from '@react-native-community/slider';
 import { useUser } from '../../../hooks/useUser';
@@ -7,17 +7,20 @@ import { Colors } from '../../../constants/Colors';
 import ThemedText from "../../../components/ThemedText";
 import ThemedView from "../../../components/ThemedView";
 import ThemedButton from '../../../components/ThemedButton';
+import {Ionicons} from "@expo/vector-icons";
 
 // ─── App-wide defaults ────────────────────────────────────────────────────────
 const APP_DEFAULTS = {
     darkMode: false,
     accessibilityRouting: false,
-    distanceNormal: 500,
-    distanceSilent: 1000,
+    distanceNormal: 100,
+    distanceSilent: 150,
     notifProtest: 'normal',
     notifRoad: 'normal',
     notifConstruction: 'normal',
     notifVandalism: 'normal',
+    normalEnabled: true,
+    silentEnabled: true,
 };
 
 const profileToValues = (profile) => ({
@@ -29,6 +32,8 @@ const profileToValues = (profile) => ({
     notifRoad:            profile?.notif_road             ?? APP_DEFAULTS.notifRoad,
     notifConstruction:    profile?.notif_construction     ?? APP_DEFAULTS.notifConstruction,
     notifVandalism:       profile?.notif_vandalism        ?? APP_DEFAULTS.notifVandalism,
+    normalEnabled: profile?.distance_normal_enabled ?? true,
+    silentEnabled: profile?.distance_silent_enabled ?? true,
 });
 
 const Preferences = () => {
@@ -48,6 +53,10 @@ const Preferences = () => {
     const [notifRoad,            setNotifRoad]            = useState(savedValuesRef.current.notifRoad);
     const [notifConstruction,    setNotifConstruction]    = useState(savedValuesRef.current.notifConstruction);
     const [notifVandalism,       setNotifVandalism]       = useState(savedValuesRef.current.notifVandalism);
+    const [distanceInfoVisible, setDistanceInfoVisible] = useState(false)
+
+    const [normalEnabled, setNormalEnabled] = useState(true)
+    const [silentEnabled, setSilentEnabled] = useState(true)
 
     const profileLoadedRef = useRef(false);
     useEffect(() => {
@@ -117,6 +126,8 @@ const Preferences = () => {
                 notif_construction:    notifConstruction,
                 notif_vandalism:       notifVandalism,
                 preferences_completed: true,
+                distance_normal_enabled: normalEnabled,
+                distance_silent_enabled: silentEnabled,
             });
             savedValuesRef.current = { darkMode, accessibilityRouting, distanceNormal, distanceSilent, notifProtest, notifRoad, notifConstruction, notifVandalism };
             setPrefUpdated(false);
@@ -199,43 +210,80 @@ const Preferences = () => {
             </View>
 
             {/* ALERT DISTANCES */}
-            <ThemedText style={styles.sectionLabel}>Alert Distances</ThemedText>
-            <ThemedText style={styles.sectionHelper}>How far from an incident before you get alerted.</ThemedText>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <ThemedText style={styles.sectionLabel}>Alert Distances</ThemedText>
+                <TouchableOpacity onPress={() => setDistanceInfoVisible(true)}>
+                    <Ionicons name="information-circle-outline" size={18} color={Colors.primary} />
+                </TouchableOpacity>
+            </View>
+            <ThemedText style={styles.sectionHelper}>
+                Normal alerts show a popup. Silent alerts send a push notification only.
+            </ThemedText>
             <View style={styles.card}>
                 {/* normal distance slider */}
                 <View style={styles.sliderRow}>
                     <ThemedText style={styles.rowLabel}>Normal</ThemedText>
-                    <ThemedText style={styles.sliderValue}>{distanceNormal}m</ThemedText>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                        <ThemedText style={styles.sliderValue}>{normalEnabled ? `${distanceNormal}m` : 'Off'}</ThemedText>
+                        <Switch
+                            value={normalEnabled}
+                            onValueChange={(val) => { setNormalEnabled(val); markUpdated(); }}
+                            trackColor={{ true: Colors.primary }}
+                            style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+                        />
+                    </View>
                 </View>
-                <Slider
-                    style={styles.slider}
-                    minimumValue={100}
-                    maximumValue={1000}
-                    step={50}
-                    value={distanceNormal}
-                    onValueChange={(val) => { setDistanceNormal(val); markUpdated(); }}
-                    minimumTrackTintColor={Colors.primary}
-                    maximumTrackTintColor="#ccc"
-                    thumbTintColor={Colors.primary}
-                />
+                {normalEnabled &&
+                    <Slider
+                        style={styles.slider}
+                        minimumValue={100}
+                        maximumValue={500}
+                        step={50}
+                        value={distanceNormal}
+                        onValueChange={(val) => {
+                            setDistanceNormal(val);
+                            if (val >= distanceSilent) setDistanceSilent(val + 50);
+                            markUpdated();
+                        }}
+                        minimumTrackTintColor={Colors.primary}
+                        maximumTrackTintColor="#ccc"
+                        thumbTintColor={Colors.primary}
+                    />
+                }
+
                 <View style={styles.divider} />
 
                 {/* silent distance slider — must be >= normal */}
+                <View style={styles.divider} />
                 <View style={styles.sliderRow}>
                     <ThemedText style={styles.rowLabel}>Silent</ThemedText>
-                    <ThemedText style={styles.sliderValue}>{distanceSilent}m</ThemedText>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                        <ThemedText style={styles.sliderValue}>{silentEnabled ? `${distanceSilent}m` : 'Off'}</ThemedText>
+                        <Switch
+                            value={silentEnabled}
+                            onValueChange={(val) => { setSilentEnabled(val); markUpdated(); }}
+                            trackColor={{ true: Colors.primary }}
+                            style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+                        />
+                    </View>
                 </View>
-                <Slider
-                    style={styles.slider}
-                    minimumValue={100}
-                    maximumValue={2000}
-                    step={50}
-                    value={distanceSilent}
-                    onValueChange={(val) => { setDistanceSilent(Math.max(val, distanceNormal)); markUpdated(); }}
-                    minimumTrackTintColor="#F59E0B"
-                    maximumTrackTintColor="#ccc"
-                    thumbTintColor="#F59E0B"
-                />
+                {silentEnabled &&
+                    <Slider
+                        style={styles.slider}
+                        minimumValue={100}
+                        maximumValue={500}
+                        step={50}
+                        value={distanceSilent}
+                        onValueChange={(val) => {
+                            setDistanceSilent(val);
+                            if (val <= distanceNormal) setDistanceNormal(Math.max(100, val - 50));
+                            markUpdated();
+                        }}
+                        minimumTrackTintColor="#F59E0B"
+                        maximumTrackTintColor="#ccc"
+                        thumbTintColor="#F59E0B"
+                    />
+                }
             </View>
 
             {/* INCIDENT TYPE OVERRIDES */}
@@ -263,7 +311,36 @@ const Preferences = () => {
                     <ThemedText style={{ color: Colors.primary, textAlign: 'center' }}>Skip for now</ThemedText>
                 </TouchableOpacity>
             )}
-
+            {/* distance info modal */}
+            <Modal
+                visible={distanceInfoVisible}
+                transparent
+                animationType="fade"
+                onRequestClose={() => setDistanceInfoVisible(false)}
+            >
+                <TouchableOpacity
+                    style={styles.modalOverlay}
+                    activeOpacity={1}
+                    onPress={() => setDistanceInfoVisible(false)}
+                >
+                    <View style={styles.modalCard}>
+                        <ThemedText style={styles.modalTitle}>Alert Distances</ThemedText>
+                        <ThemedText style={styles.modalBody}>
+                            <ThemedText style={{ fontWeight: 'bold' }}>Normal</ThemedText>
+                            {' — within this distance of an incident, you get a popup and a push notification.\n\n'}
+                            <ThemedText style={{ fontWeight: 'bold' }}>Silent</ThemedText>
+                            {' — further out than Normal, you get a push notification only with no popup interruption.\n\n'}
+                            Silent must always be greater than Normal. If you drag Normal past Silent, Silent will automatically adjust.
+                        </ThemedText>
+                        <TouchableOpacity
+                            style={styles.modalButton}
+                            onPress={() => setDistanceInfoVisible(false)}
+                        >
+                            <Text style={{ color: '#fff', fontWeight: '600' }}>Got it</Text>
+                        </TouchableOpacity>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
         </ThemedView>
     );
 };
@@ -277,9 +354,10 @@ const styles = StyleSheet.create({
     sectionLabel: { fontSize: 13, fontWeight: '600', opacity: 0.5, marginBottom: 6, marginTop: 10, textTransform: 'uppercase', letterSpacing: 0.5 },
     sectionHelper: { fontSize: 12, opacity: 0.5, marginBottom: 6, marginTop: -4 },
 
-    card: { borderRadius: 12, backgroundColor: 'rgba(150,150,150,0.08)', paddingHorizontal: 14, marginBottom: 4 },
+    // card: { borderRadius: 12, backgroundColor: 'rgba(150,150,150,0.08)', paddingHorizontal: 14, marginBottom: 4 },
+    card: { borderRadius: 12, backgroundColor: 'rgba(150,150,150,0.08)', paddingHorizontal: 14, paddingVertical: 0, marginBottom: 4 },
 
-    row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 8 },
+    row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 6 },
     rowLabel: { fontSize: 15, fontWeight: '500' },
 
     helperText: { fontSize: 12, opacity: 0.6, marginTop: 2 },
@@ -287,9 +365,9 @@ const styles = StyleSheet.create({
     divider: { backgroundColor: 'rgba(150,150,150,0.3)' },
 
     // distance sliders
-    sliderRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingTop: 12, paddingBottom: 0 },
     sliderValue: { fontSize: 14, fontWeight: '600', opacity: 0.7 },
-    slider: { width: '100%', height: 36 },
+    sliderRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingTop: 4, paddingBottom: 0 },
+    slider: { width: '100%', height: 24 },
 
     // tri-toggle
     segmentedControl: { flexDirection: 'row', backgroundColor: 'rgba(150,150,150,0.1)', borderRadius: 8, padding: 3, width: 180 },
@@ -302,4 +380,36 @@ const styles = StyleSheet.create({
 
     button: { width: '100%', alignItems: 'center', borderRadius: 30, marginTop: 16, marginBottom: 8 },
     skip: { paddingVertical: 8 },
+
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 30,
+    },
+    modalCard: {
+        backgroundColor: '#fff',
+        borderRadius: 16,
+        padding: 24,
+        width: '100%',
+    },
+    modalTitle: {
+        fontSize: 17,
+        fontWeight: '700',
+        marginBottom: 12,
+        color: '#000',
+    },
+    modalBody: {
+        fontSize: 14,
+        lineHeight: 22,
+        color: '#333',
+        marginBottom: 20,
+    },
+    modalButton: {
+        backgroundColor: Colors.primary,
+        borderRadius: 10,
+        paddingVertical: 12,
+        alignItems: 'center',
+    },
 });

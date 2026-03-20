@@ -4,4 +4,4 @@ export const SEVERITY_RADIUS = {
     low: 40,
 }
 
-export const WARNING_RADIUS = 200;
+export const WARNING_RADIUS = 100;
