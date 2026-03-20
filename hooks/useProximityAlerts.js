@@ -12,9 +12,7 @@ function getNotifLevel(incident, profile) {
         protest:       profile?.notif_protest,
         construction:  profile?.notif_construction,
         blockade:      profile?.notif_road,
-        safety:        profile?.notif_road,
-        emergency:     'normal', // emergencies always normal regardless of preference
-        accessibility: 'normal',
+        vandalism:     profile?.notif_vandalism,
     }
     return map[incident.type] ?? 'normal'
 }

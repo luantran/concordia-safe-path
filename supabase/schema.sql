@@ -45,6 +45,8 @@ create table if not exists profiles (
     notif_road              text default 'normal' check (notif_road in ('normal', 'silent', 'muted')),
     notif_construction      text default 'normal' check (notif_construction in ('normal', 'silent', 'muted')),
     notif_vandalism         text default 'normal' check (notif_vandalism in ('normal', 'silent', 'muted')),
+    distance_normal_enabled boolean default true,
+    distance_silent_enabled boolean default true,
     created_at              timestamptz default now()
 );
 
@@ -81,7 +83,7 @@ create policy "Users can update own profile"
 create table if not exists incidents (
     id                      uuid primary key default gen_random_uuid(),
     user_id                 uuid references auth.users(id) on delete cascade not null,
-    type                    text not null check (type in ('protest', 'construction', 'emergency', 'blockade', 'accessibility', 'safety')),
+    type                    text not null check (type in ('protest', 'construction', 'emergency', 'blockade', 'accessibility', 'safety', 'vandalism')),
     description             text,
     severity                text not null check (severity in ('low', 'medium', 'high')),
     latitude                double precision,
