@@ -8,12 +8,11 @@
  *  - ...props": All other View props, including children.
  */
 
-import { StyleSheet, View, useColorScheme } from "react-native";
-import { Colors } from '../constants/Colors'
+import { StyleSheet, View } from "react-native";
+import {useTheme} from "../contexts/ThemeContext";
 
 const ThemedCard = ({ style, ...props }) => {
-    const colorScheme = useColorScheme();
-    const theme = Colors[colorScheme] ?? Colors.light;
+    const { theme } = useTheme()
 
     // theme.uiBackground is slightly elevated from theme.background —
     // creates a visual layering effect between the screen and card surfaces

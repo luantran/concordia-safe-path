@@ -5,7 +5,6 @@ import {
     Keyboard,
     ScrollView,
     Pressable,
-    useColorScheme,
     View
 } from 'react-native'
 import { useRouter, useLocalSearchParams } from 'expo-router'
@@ -33,12 +32,12 @@ import { useNetwork } from "../../hooks/useNetwork"
 
 //Constants
 import {Colors} from "../../constants/Colors";
+import {useTheme} from "../../contexts/ThemeContext";
 
 const Create = () => {
     const { type: initialType } = useLocalSearchParams()
     const [typeModalOpen, setTypeModalOpen] = useState(false)
-    const colorScheme = useColorScheme();
-    const theme = Colors[colorScheme] ?? Colors.light;
+    const { theme } = useTheme()
 
     const [type, setType] = useState('')
     const [severity, setSeverity] = useState('low')

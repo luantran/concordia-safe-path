@@ -13,13 +13,12 @@
  *  - style — merged after background and safe area styles, so callers can override
  */
 
-import { useColorScheme, View } from "react-native";
-import { Colors } from '../constants/Colors'
+import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {useTheme} from "../contexts/ThemeContext";
 
 const ThemedView = ({ style, safe = false, ...props }) => {
-    const colorScheme = useColorScheme();
-    const theme = Colors[colorScheme] ?? Colors.light;
+    const { theme } = useTheme()
 
     // Always call the hook
     const insets = useSafeAreaInsets()

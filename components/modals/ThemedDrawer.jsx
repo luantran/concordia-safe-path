@@ -24,7 +24,6 @@
 import {
     Modal,
     TouchableWithoutFeedback,
-    useColorScheme,
     View,
     StyleSheet,
 } from 'react-native'
@@ -34,10 +33,10 @@ import { useUser } from "../../hooks/useUser";
 import { Ionicons } from "@expo/vector-icons";
 import ThemedMenuItem from "../ThemedMenuItem";
 import { useRouter } from "expo-router";
+import {useTheme} from "../../contexts/ThemeContext";
 
 const ThemedDrawer = ({ visible, onClose }) => {
-    const colorScheme = useColorScheme()
-    const theme = Colors[colorScheme] ?? Colors.light
+    const { theme } = useTheme()
 
     // user.email is displayed and used to derive the avatar initial
     const { user, logout } = useUser()

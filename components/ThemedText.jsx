@@ -11,12 +11,12 @@
  *  - style — merged after the color, so callers can override if needed
  */
 
-import { Text, useColorScheme } from "react-native";
+import { Text } from "react-native";
 import { Colors } from '../constants/Colors'
+import {useTheme} from "../contexts/ThemeContext";
 
 const ThemedText = ({ style, title = false, ...props }) => {
-    const colorScheme = useColorScheme()
-    const theme = Colors[colorScheme] ?? Colors.light
+    const { theme } = useTheme()
 
     // title=true uses a typically lighter/highlighted color for headings;
     // title=false uses the standard readable body text color

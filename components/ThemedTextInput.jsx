@@ -21,14 +21,12 @@
  */
 
 import { useState } from 'react';
-import { TextInput, TouchableOpacity, View, useColorScheme } from "react-native";
+import { TextInput, TouchableOpacity, View } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-import { Colors } from '../constants/Colors';
+import {useTheme} from "../contexts/ThemeContext";
 
 const ThemedTextInput = ({ style, secureTextEntry, icon, ...props }) => {
-    const colorScheme = useColorScheme();
-    const theme = Colors[colorScheme] ?? Colors.light; // fallback to light if scheme is null
-
+    const { theme } = useTheme()
     // controls wether password chars are visible or masked
     const [hidden, setHidden] = useState(true);
 

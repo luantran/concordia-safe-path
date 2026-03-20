@@ -15,14 +15,14 @@
  * TODO (Goal 10): The notifications icon could show a badge count?
  */
 
-import { TouchableOpacity, View, StyleSheet, useColorScheme } from 'react-native'
+import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Colors } from "../constants/Colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ThemedDrawer from './modals/ThemedDrawer'
 import { useState } from "react";
 import { usePathname, useRouter } from "expo-router";
 import ThemedText from "./ThemedText";
+import {useTheme} from "../contexts/ThemeContext";
 
 // Maps route pathnames to display titles shown in the header center.
 // Dynamic routes are handled separately below.
@@ -39,13 +39,12 @@ const PAGE_TITLES = {
 }
 
 const ThemedHeader = () => {
-    const colorScheme = useColorScheme()
+    const { theme } = useTheme()
     const insets = useSafeAreaInsets()
 
     // drawerOpen controls the visibility of the side navigation drawer
     const [drawerOpen, setDrawerOpen] = useState(false)
 
-    const theme = Colors[colorScheme] ?? Colors.light
     const router = useRouter()
     const pathname = usePathname()
 

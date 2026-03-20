@@ -1,13 +1,13 @@
 import {Modal, StyleSheet, TouchableOpacity, View, Image, TouchableWithoutFeedback} from 'react-native'
-import { useColorScheme } from 'react-native'
 import { Colors } from '../../constants/Colors'
 import ThemedText from '../ThemedText'
 import ThemedView from '../ThemedView'
 import { Ionicons } from '@expo/vector-icons'
+import {useTheme} from "../../contexts/ThemeContext";
 
 // modal to pick role (student or staff) before proceding with signup
 const RolePickerModal = ({ visible, onSelect, onClose }) => {
-    const colorScheme = useColorScheme()
+    const { theme } = useTheme()
 
     return (
         // tapping outside the card closes the modal

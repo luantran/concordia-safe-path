@@ -14,15 +14,15 @@
  * TODO (Goal 7): Add accessibility labels to each tile for screen readers.
  */
 
-import { View, Modal, TouchableWithoutFeedback, TouchableOpacity, StyleSheet, useColorScheme } from 'react-native'
+import { View, Modal, TouchableWithoutFeedback, TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Colors } from '../../constants/Colors'
 import ThemedText from './../ThemedText'
 import { Icons, INCIDENT_TYPES } from "../../constants/Icons";
+import {useTheme} from "../../contexts/ThemeContext";
 
 const IncidentTypeModal = ({ visible, onClose, onSelect }) => {
-    const colorScheme = useColorScheme()
-    const theme = Colors[colorScheme] ?? Colors.light
+    const { theme } = useTheme()
 
     return (
         // animationType="fade" gives a smooth appear/disappear transition

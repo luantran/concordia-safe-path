@@ -1,10 +1,11 @@
 import {Tabs, usePathname, useRouter} from "expo-router"
-import {TouchableOpacity, useColorScheme, StyleSheet } from "react-native"
+import {TouchableOpacity, StyleSheet } from "react-native"
 import { Colors } from "../../constants/Colors"
 import { Ionicons} from "@expo/vector-icons";
 import UserOnly from "../../components/auth/UserOnly";
 import ThemedHeader from "../../components/ThemedHeader";
 import { useUser } from "../../hooks/useUser";
+import { useTheme } from '../../contexts/ThemeContext'
 import ThemedView from "../../components/ThemedView";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import IncidentTypeModal from "../../components/modals/IncidentTypeModal";
@@ -18,8 +19,7 @@ import LocationWakeup from "../../components/LocationWakeup";
 import {useNotifications} from "../../hooks/useNotifications";
 
 export default function DashboardLayout() {
-    const colorScheme = useColorScheme()
-    const theme = Colors[colorScheme] ?? Colors.light
+    const { colorScheme, theme } = useTheme()
     const [typeModalOpen, setTypeModalOpen] = useState(false)
     const router = useRouter()
     const insets = useSafeAreaInsets()

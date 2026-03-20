@@ -31,16 +31,16 @@
  * TODO (Goal 12): Wire the right "Safe Walk" button to the share-location flow
  */
 
-import { View, TouchableOpacity, StyleSheet, useColorScheme, TouchableWithoutFeedback, Modal } from 'react-native'
+import { View, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Modal } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Colors } from '../../constants/Colors'
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
 import { useRouter } from "expo-router";
+import {useTheme} from "../../contexts/ThemeContext";
 
 const SpeedDial = ({ paddingTop = 0 }) => {
-    const colorScheme = useColorScheme()
-    const theme = Colors[colorScheme] ?? Colors.light
+    const { theme } = useTheme()
 
     // insets.bottom = height of the home indicator / bottom safe area
     const insets = useSafeAreaInsets()

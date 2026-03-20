@@ -18,17 +18,17 @@
  */
 
 import { useState } from 'react'
-import { StyleSheet, Pressable, FlatList, Modal, useColorScheme } from 'react-native'
+import { StyleSheet, Pressable, FlatList, Modal } from 'react-native'
 import { Colors } from '../constants/Colors'
 import ThemedText from './ThemedText'
 import ThemedView from './ThemedView'
+import {useTheme} from "../contexts/ThemeContext";
 
 const ThemedDropdown = ({ value, options, onSelect, placeholder = "Select an option", style }) => {
     // Controls whether the modal list is visible
     const [open, setOpen] = useState(false)
 
-    const colorScheme = useColorScheme()
-    const theme = Colors[colorScheme] ?? Colors.light
+    const { theme } = useTheme()
 
     return (
         <>
