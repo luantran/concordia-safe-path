@@ -306,6 +306,7 @@ const Map = () => {
                   coordinate={{ latitude: building.latitude, longitude: building.longitude }}
                   title={building.name}
                   image={BUILDING_MARKER}
+                  style={{ width: 16, height: 16 }}  // add this
               />
           ))}
 

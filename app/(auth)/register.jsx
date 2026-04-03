@@ -23,6 +23,7 @@ import {
 } from 'react-native'
 import {useEffect, useState} from "react"
 import { useLocalSearchParams, useRouter } from "expo-router"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { useUser } from "../../hooks/useUser"
 import { Colors } from "../../constants/Colors"
@@ -34,6 +35,7 @@ import ThemedButton from "../../components/ThemedButton"
 import ThemedTextInput from "../../components/ThemedTextInput"
 import EmailConfirmationModal from "../../components/auth/EmailConfirmationModal"
 import AuthHeader from "../../components/auth/AuthHeader"
+import LogoCard from "../../components/auth/LogoCard"
 
 const Register = () => {
     const { role } = useLocalSearchParams() // 'student' or 'staff', passed from RolePickerModal
@@ -53,6 +55,7 @@ const Register = () => {
     const router = useRouter()
 
     const [keyboardOpen, setKeyboardOpen] = useState(false)
+    const insets = useSafeAreaInsets()
 
     // animate layout when keyboard opens/closes so nothing gets covered
     useEffect(() => {
@@ -117,11 +120,16 @@ const Register = () => {
                     {/* hide header when keyboard is open to save space */}
                     {!keyboardOpen && <AuthHeader />}
 
+                    {/* Logo card positioned absolutely on top of everything */}
+                    {!keyboardOpen && (
+                        <View style={[styles.logoOverlay, { top: insets.top + 60 }]}>
+                            <LogoCard />
+                        </View>
+                    )}
+
                     {/* remove rounded corners when keyboard is open, looks weird otherwise */}
-                    <ThemedView style={[
-                        styles.container,
-                        keyboardOpen && { marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0 }
-                    ]} safe={false}>
+                    <View style={[styles.panelHost, keyboardOpen && styles.panelHostKeyboard]}>
+                        <ThemedView style={[styles.panelClip, styles.container]} safe={false}>
 
                         {/* title changes based on role */}
                         <ThemedText title={true} style={styles.title}>
@@ -190,7 +198,8 @@ const Register = () => {
                             This app uses its own account system,{'\n'}separate from your university credentials.
                         </ThemedText>
 
-                    </ThemedView>
+                        </ThemedView>
+                    </View>
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
@@ -200,18 +209,38 @@ const Register = () => {
 export default Register
 
 const styles = StyleSheet.create({
+    logoOverlay: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        zIndex: 100,
+        pointerEvents: 'box-none',
+    },
+    panelHost: {
+        flex: 1,
+        marginTop: -20,
+        zIndex: 10,
+        overflow: 'visible',
+    },
+    panelHostKeyboard: {
+        marginTop: 0,
+    },
+    panelClip: {
+        borderTopLeftRadius: 44,
+        borderTopRightRadius: 44,
+        overflow: 'hidden',
+    },
     root: {
         flex: 1,
         backgroundColor: Colors.primaryDark,
+        overflow: 'visible',
     },
     container: {
         flex: 1,
         alignItems: "center",
         justifyContent: 'center',
-        borderTopLeftRadius: 50,
-        borderTopRightRadius: 50,
         paddingHorizontal: 28,
-        marginTop: -30, // overlaps slightly over the header
     },
     title: {
         textAlign: "center",

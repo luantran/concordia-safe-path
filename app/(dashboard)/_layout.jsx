@@ -6,8 +6,9 @@ import ThemedHeader from "../../components/ThemedHeader";
 import { useUser } from "../../hooks/useUser";
 import ThemedView from "../../components/ThemedView";
 import IncidentTypeModal from "../../components/modals/IncidentTypeModal";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import OfflineBanner from "../../components/offline/OfflineBanner";
+import * as NavigationBar from "expo-navigation-bar";
 
 import { useIncidents } from "../../hooks/useIncidents";
 import { useProximityAlerts } from "../../hooks/useProximityAlerts";
@@ -16,11 +17,13 @@ import LocationWakeup from "../../components/LocationWakeup";
 import {useNotifications} from "../../hooks/useNotifications";
 import { NotificationsProvider } from '../../contexts/NotificationsContext'
 import {useTheme} from "../../contexts/ThemeContext";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 export default function DashboardLayout() {
     const { colorScheme } = useTheme()
     const theme = Colors[colorScheme] ?? Colors.light
     const [typeModalOpen, setTypeModalOpen] = useState(false)
+    const [tabBarHeight, setTabBarHeight] = useState(60) // fallback until measured
     const router = useRouter()
     const pathname = usePathname()
     const { profile } = useUser()
@@ -29,6 +32,32 @@ export default function DashboardLayout() {
     const activeIncidents = incidents.filter(i => i.status === 'active' && i.latitude && i.longitude);
     const { sendProximityNotification, resetNotification } = useNotifications();
     const { activeAlert, dismissAlert } = useProximityAlerts(activeIncidents, sendProximityNotification, resetNotification);
+    const insets = useSafeAreaInsets()
+
+    // Measure actual tab bar height on layout
+    const handleTabBarLayout = (event) => {
+        const { height } = event.nativeEvent.layout
+        setTabBarHeight(height)
+    }
+
+    // Configure system navigation bar to match theme
+    useEffect(() => {
+        if (NavigationBar) {
+            try {
+                // Set navigation bar background color to match tab bar
+                NavigationBar.setBackgroundColorAsync(theme.navBackground)
+                // Try to enable light icons if theme is dark, otherwise use dark icons
+                if (colorScheme === 'dark') {
+                    NavigationBar.setButtonStyleAsync('light')
+                } else {
+                    NavigationBar.setButtonStyleAsync('dark')
+                }
+            } catch (error) {
+                // NavigationBar API not available on all platforms (e.g., iOS)
+                console.log('NavigationBar configuration not available')
+            }
+        }
+    }, [theme, colorScheme])
 
     // hide header/tabs when user is on preferences for the first time
     const isOnboarding = pathname === '/menu/preferences' && !profile?.preferences_completed
@@ -39,10 +68,14 @@ export default function DashboardLayout() {
                 <ThemedHeader />
                 <OfflineBanner />
                 <Tabs
+                    safeAreaInsets={{ bottom: insets.bottom }}
                     screenOptions={({ route }) => ({
                         headerShown: false,
-                        // tabBarStyle: { backgroundColor: 'blue', paddingTop: TAB_BAR_PADDING_TOP, height: insets.bottom + 65},
-                        tabBarStyle: isOnboarding ? { display: 'none' } : { backgroundColor: theme.navBackground, height: 100 },
+                        tabBarStyle: isOnboarding ? { display: 'none' } : {
+                            backgroundColor: theme.navBackground,
+                            paddingBottom: insets.bottom,
+                            height: tabBarHeight + insets.bottom,
+                        },
                         tabBarActiveTintColor: theme.iconColorFocused,
                         tabBarInactiveTintColor: theme.iconColor,
                         tabBarItemStyle: {
@@ -51,6 +84,7 @@ export default function DashboardLayout() {
                             borderTopColor: pathname === `/${route.name}` ? theme.iconColorFocused : 'transparent',
                         },
                     })}
+                    onLayout={handleTabBarLayout}
                 >
                     <Tabs.Screen
                         name="incidents"

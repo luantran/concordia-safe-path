@@ -21,8 +21,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
-      "package": "com.soen6751.concordia_safe_path"
+      "edgeToEdgeEnabled": false,
+      "package": "com.soen6751.concordia_safe_path",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBwRzAPTbTZGXlq19ywgIMCKijptoEC18o"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

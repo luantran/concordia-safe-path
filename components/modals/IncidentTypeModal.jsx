@@ -19,10 +19,12 @@ import { Colors } from '../../constants/Colors'
 import ThemedText from './../ThemedText'
 import { INCIDENT_TYPES, IncidentIconMap } from "../../constants/Icons";
 import {useTheme} from "../../contexts/ThemeContext";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 const IncidentTypeModal = ({ visible, onClose, onSelect }) => {
     const { colorScheme } = useTheme()
     const theme = Colors[colorScheme] ?? Colors.light
+    const insets = useSafeAreaInsets()
 
     return (
         // animationType="fade" gives a smooth appear/disappear transition
@@ -34,7 +36,17 @@ const IncidentTypeModal = ({ visible, onClose, onSelect }) => {
                     {/* Inner panel — stops touch propagation so tapping the
                         panel doesn't bubble up and trigger onClose */}
                     <TouchableWithoutFeedback>
-                        <View style={[styles.container, { backgroundColor: theme.navBackground }]}>
+                        <View
+                            style={[
+                                styles.container,
+                                {
+                                    backgroundColor: theme.navBackground,
+                                    // Match dashboard safe-area logic: use bottom inset directly.
+                                    paddingBottom: insets.bottom,
+                                    marginBottom: insets.bottom,
+                                },
+                            ]}
+                        >
                             <ThemedText title={true} style={styles.heading}>
                                 Select the Type of Incident
                             </ThemedText>
@@ -80,7 +92,6 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
         padding: 24,
-        paddingBottom: 40, // extra bottom padding for home indicator clearance
     },
     heading: {
         fontSize: 20,
