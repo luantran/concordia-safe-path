@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "concordia_safe_path",
+    "name": "Concordia Safe Path",
     "slug": "concordia_safe_path",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/img/cons_safe.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": false,
     "scheme": "concordia-safe-path-app",

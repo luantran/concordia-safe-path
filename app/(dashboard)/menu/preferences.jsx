@@ -202,7 +202,15 @@ const Preferences = () => {
                     <ThemedText type="defaultSemiBold" style={[styles.sectionTitle, { color: theme.title }]}>App Settings</ThemedText>
                     <View style={styles.settingRow}>
                         <View style={{ flex: 1 }}><ThemedText>Dark Mode</ThemedText></View>
-                        <Switch trackColor={{ true: Colors.primary }} onValueChange={(val) => { setDarkMode(val); markUpdated(); }} value={darkMode} />
+                        <Switch
+                            trackColor={{ true: Colors.primary, false: '#D1D5DB' }}
+                            onValueChange={(val) => {
+                                setDarkMode(val)
+                                applyDarkMode(val)
+                                markUpdated()
+                            }}
+                            value={darkMode}
+                        />
                     </View>
                     <View style={[styles.divider, { backgroundColor: Colors.divider }]} />
                     <View style={styles.settingRow}>
@@ -210,7 +218,11 @@ const Preferences = () => {
                             <ThemedText>Accessible Routing</ThemedText>
                             <ThemedText style={[styles.helperText, { color: theme.text }]}>Prioritize elevators and wheelchair-accessible paths in navigation previews.</ThemedText>
                         </View>
-                        <Switch trackColor={{ true: Colors.primary }} onValueChange={(val) => { setAccessibilityRouting(val); markUpdated(); }} value={accessibilityRouting} />
+                        <Switch
+                            trackColor={{ true: Colors.primary, false: '#D1D5DB' }}
+                            onValueChange={(val) => { setAccessibilityRouting(val); markUpdated(); }}
+                            value={accessibilityRouting}
+                        />
                     </View>
                 </View>
 
