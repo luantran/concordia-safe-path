@@ -21,7 +21,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": false,
+      "edgeToEdgeEnabled": true,
       "package": "com.soen6751.concordia_safe_path",
       "config": {
         "googleMaps": {
@@ -39,6 +39,13 @@
         "expo-notifications",
         {
           "sounds": []
+        }
+      ],
+      [
+        "expo-navigation-bar",
+        {
+          "backgroundColor": "#ffffff",
+          "barStyle": "dark"
         }
       ]
     ],

@@ -76,7 +76,7 @@ const ThemedDrawer = ({ visible, onClose }) => {
 
                     {/* Drawer panel — stops tap propagation so it doesn't close on self-tap */}
                     <TouchableWithoutFeedback>
-                        <View style={{ width: 300, height: '100%', backgroundColor: theme.navBackground }}>
+                        <View style={{ width: 300, height: '100%', backgroundColor: theme.uiBackground }}>
 
                             <View style={[styles.userSection, { paddingTop: insets.top }]}>
                                 {/* Avatar circle — shows first letter of user's email */}

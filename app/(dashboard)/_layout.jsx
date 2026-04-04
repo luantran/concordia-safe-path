@@ -80,7 +80,7 @@ export default function DashboardLayout() {
                         tabBarInactiveTintColor: theme.iconColor,
                         tabBarItemStyle: {
                             borderTopWidth: 3,
-                            paddingTop: 10,
+                            paddingTop: 5,
                             borderTopColor: pathname === `/${route.name}` ? theme.iconColorFocused : 'transparent',
                         },
                     })}
@@ -104,7 +104,7 @@ export default function DashboardLayout() {
                             title: "Resources",
                             tabBarItemStyle: {
                                 borderTopWidth: 3,
-                                paddingTop: 10,
+                                paddingTop: 5,
                                 borderTopColor: pathname === '/menu/resources' ? theme.iconColorFocused : 'transparent',
                             },
                             tabBarIcon: ({focused}) => (
@@ -118,7 +118,7 @@ export default function DashboardLayout() {
                             title: "Report",
                             tabBarItemStyle: {
                                 borderTopWidth: 3,
-                                paddingTop: 10,
+                                paddingTop: 5,
                                 borderTopColor: pathname === '/create' ? theme.iconColorFocused : 'transparent',
                             },
                             tabBarIcon: ({focused}) => (

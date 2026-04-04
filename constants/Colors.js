@@ -9,7 +9,7 @@ export const Colors = {
         text:             '#d4d4d4',
         title:            '#fff',
         background:       '#252231',
-        navBackground:    '#201e2b',
+        navBackground:    '#000000',
         iconColor:        '#9591a5',
         iconColorFocused: '#fff',
         uiBackground:     '#2f2b3d',
@@ -31,13 +31,6 @@ export const Colors = {
         high:   '#ff6b6b',   // red
         medium: '#ffd93d',   // yellow
         low:    '#6bcb77',   // green
-    },
-
-    // Incident severity fill (for danger zone circles on map)
-    severityFill: {
-        low:    'rgba(0,200,0,0.2)',
-        medium: 'rgba(255,200,0,0.2)',
-        high:   'rgba(255,0,0,0.2)',
     },
 
     // Incident type

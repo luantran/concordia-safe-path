@@ -40,7 +40,7 @@ const IncidentTypeModal = ({ visible, onClose, onSelect }) => {
                             style={[
                                 styles.container,
                                 {
-                                    backgroundColor: theme.navBackground,
+                                    backgroundColor: theme.uiBackground,
                                     // Match dashboard safe-area logic: use bottom inset directly.
                                     paddingBottom: insets.bottom,
                                     marginBottom: insets.bottom,
