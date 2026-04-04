@@ -157,6 +157,15 @@ const IncidentDetails = () => {
 
                 <View style={styles.separator} />
 
+                {/* Description */}
+{incident.description && (
+    <View style={styles.descriptionContainer}>
+        <ThemedText style={styles.descriptionText}>
+            {incident.description}
+        </ThemedText>
+    </View>
+)}
+
                 <IncidentProgress incident={incident} netVotes={netVotes} />
 
                 <View style={styles.separator} />
@@ -273,4 +282,12 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 15,
     },
+    descriptionContainer: {
+    paddingVertical: 8,
+},
+descriptionText: {
+    fontSize: 14,
+    lineHeight: 20,
+    opacity: 0.75,
+},
 })

@@ -1,6 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react"
 import { StyleSheet, View, TouchableOpacity, Keyboard, Text } from 'react-native'
-import PulsingButton from '../../components/PulsingButton'
 import MapView, { Marker, Circle, Polygon } from "react-native-maps"
 import * as Location from "expo-location"
 
@@ -54,6 +53,7 @@ const Map = () => {
   const rawTrigger = Array.isArray(_alertTrigger) ? _alertTrigger[0] : _alertTrigger
 
   const [alertIncidentId, setAlertIncidentId] = useState(rawAlertId)
+  const [showSafeNowButton, setShowSafeNowButton] = useState(false)
 
   const {
     isUserInDangerZone,
@@ -193,6 +193,17 @@ const Map = () => {
       setSelectedIncidentId(null)
     }
   }, [incidents])
+
+  useEffect(() => {
+    if (navigatingToSafety && routes.length > 0) {
+        const timer = setTimeout(() => {
+            setShowSafeNowButton(true)
+        }, 15000) // 10 seconds delay
+        return () => clearTimeout(timer)
+    } else {
+        setShowSafeNowButton(false)
+    }
+}, [navigatingToSafety, routes.length])
 
   // clear selected incident when screen comes into focus from navigation
   useFocusEffect(
@@ -428,6 +439,16 @@ const Map = () => {
         )}
         {(isUserInDangerZone || navigatingToSafety) && (
             <>
+            {isUserInDangerZone && !navigatingToSafety && (
+                <View style={styles.safeZoneWarning}>
+                  <Text style={styles.safeZoneWarningText}>
+                    ⚠ You are in a danger zone
+                  </Text>
+                  <Text style={styles.safeZoneWarningSub}>
+                    Tap “Safe Zone Now” to navigate to a safe location
+                  </Text>
+                </View>
+              )}
               {safeZoneMessage && !navigatingToSafety && (
                   <View style={styles.warningContainer}>
                     <ThemedText style={styles.warningText}>
@@ -435,39 +456,55 @@ const Map = () => {
                     </ThemedText>
                   </View>
               )}
-              {navigatingToSafety ? (
-                  <TouchableOpacity
-                      style={styles.safeZoneButton}
-                      onPress={() => {
-                        setDestination(null)
-                        setNavigatingToSafety(false)
-                        setSafeZoneMessage(null)
-                        setSelectedRouteId(null)
-                        setRoutesDismissed(true)
-                      }}
-                      activeOpacity={0.85}
-                  >
-                    <ThemedText style={styles.safeZoneButtonText}>I AM SAFE NOW</ThemedText>
-                  </TouchableOpacity>
-              ) : (
+              {navigatingToSafety && showSafeNowButton ? (
+              <>
+                <View style={styles.safeExitNote}>
+                  <Text style={styles.safeExitNoteText}>
+                    Reached a safe place? Tap “I’m Safe” to exit navigation.
+                  </Text>
+                </View>
+
+    
+                <TouchableOpacity
+                  style={styles.safeZoneButton}
+                  onPress={() => {
+                    setDestination(null)
+                    setNavigatingToSafety(false)
+                    setSafeZoneMessage(null)
+                    setSelectedRouteId(null)
+                    setRoutesDismissed(true)
+                    setShowSafeNowButton(false) 
+                  }}
+                  activeOpacity={0.85}
+                >
+                  <Ionicons name="checkmark-circle" size={18} color="#fff" />
+                  <ThemedText style={styles.safeZoneButtonText}>
+                    I’m Safe
+                  </ThemedText>
+                </TouchableOpacity>
+              </>
+                ) : !navigatingToSafety ? (
                   // SAFE ZONE NOW requires Directions API — block when offline
-                  <PulsingButton
-                      label="SAFE ZONE NOW"
+                  <TouchableOpacity
+                      style={styles.safeZoneCompact}
                       onPress={async () => {
-                        if (!isOnline) { setOfflineModal(true); return }
-                        const nearest = getNearestBuilding()
-                        if (nearest) {
-                          originSnapshot.current = location
-                          setDestination({ latitude: nearest.latitude, longitude: nearest.longitude })
-                          setNavigatingToSafety(true)
-                          setRoutesDismissed(false)
-                        } else {
-                          setSafeZoneMessage('⚠ All nearby buildings are in a danger zone. Please stay put.')
-                        }
+                          if (!isOnline) { setOfflineModal(true); return }
+                          const nearest = getNearestBuilding()
+                          if (nearest) {
+                              originSnapshot.current = location
+                              setDestination({ latitude: nearest.latitude, longitude: nearest.longitude })
+                              setNavigatingToSafety(true)
+                              setRoutesDismissed(false)
+                          } else {
+                              setSafeZoneMessage('⚠ All nearby buildings are in a danger zone. Please stay put.')
+                          }
                       }}
-                  />
-              )}
-            </>
+                  >
+                  <Ionicons name="shield-checkmark" size={20} color="#fff" />
+                    <Text style={styles.safeZoneCompactText}>Safe Zone Now</Text>
+                  </TouchableOpacity>
+                    ) : null}
+                  </>
         )}
 
         {!isUserInDangerZone && !navigatingToSafety && !isDestinationInDangerZone && isSelectedRouteUnsafe && (
@@ -533,26 +570,31 @@ const styles = StyleSheet.create({
   },
 
   safeZoneButton: {
-    position: 'absolute',
-    bottom: 32,
-    alignSelf: 'center',
-    backgroundColor: '#27ae60',
-    paddingHorizontal: 28,
-    paddingVertical: 14,
-    borderRadius: 30,
-    elevation: 6,
-    zIndex: 20,
-    shadowColor: '#27ae60',
-    shadowOpacity: 0.5,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-  },
+  position: 'absolute',
+  bottom: 32,
+  alignSelf: 'center',
+  backgroundColor: '#27ae60',
+
+  paddingHorizontal: 20,   // 👈 smaller
+  paddingVertical: 10,     // 👈 smaller
+  borderRadius: 22,
+
+  flexDirection: 'row',    // 👈 for icon
+  alignItems: 'center',
+  gap: 6,
+
+  elevation: 3,            // 👈 softer shadow
+  shadowColor: '#000',
+  shadowOpacity: 0.15,
+  shadowRadius: 6,
+  shadowOffset: { width: 0, height: 2 },
+},
 
   safeZoneButtonText: {
-    color: '#fff',
-    fontWeight: '700',
-    fontSize: 16,
-  },
+  color: '#fff',
+  fontWeight: '600',
+  fontSize: 14,
+},
 
   safeButtonText: {
     color: "white",
@@ -659,6 +701,72 @@ const styles = StyleSheet.create({
   calloutHint: {
     fontSize: 12,
     color: Colors.primary,
+    fontWeight: '500',
+  },
+  safeZoneCompact: {
+    position: 'absolute',
+    bottom: 32,
+    alignSelf: 'center',
+    backgroundColor: '#27ae60',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 24,
+    elevation: 6,
+    zIndex: 20,
+    shadowColor: '#27ae60',
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+  },
+  safeZoneCompactText: {
+      color: '#fff',
+      fontWeight: '700',
+      fontSize: 15,
+  },
+  safeZoneWarning: {
+    position: 'absolute',
+    bottom: 90, // 👈 sits just above button
+    alignSelf: 'center',
+    backgroundColor: '#FFF3CD',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    elevation: 6,
+    zIndex: 20,
+    width: '85%',
+  },
+
+  safeZoneWarningText: {
+    color: '#B45309',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+
+  safeZoneWarningSub: {
+    color: '#7C2D12',
+    textAlign: 'center',
+    marginTop: 4,
+    fontSize: 12,
+  },
+  safeExitNote: {
+    position: 'absolute',
+    bottom: 80, // 👈 sits above button
+    alignSelf: 'center',
+    backgroundColor: '#E6F4EA',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+    elevation: 3,
+    zIndex: 20,
+  },
+
+  safeExitNoteText: {
+    color: '#1B5E20',
+    fontSize: 12,
+    textAlign: 'center',
     fontWeight: '500',
   },
 
