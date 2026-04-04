@@ -78,7 +78,7 @@ const ThemedDrawer = ({ visible, onClose }) => {
                     <TouchableWithoutFeedback>
                         <View style={{ width: 300, height: '100%', backgroundColor: theme.uiBackground }}>
 
-                            <View style={[styles.userSection, { paddingTop: insets.top }]}>
+                            <View style={[styles.userSection, { paddingTop: insets.top + 10 }]}>
                                 {/* Avatar circle — shows first letter of user's email */}
                                 <View style={[styles.avatar, { backgroundColor: Colors.primary }]}>
                                     <ThemedText style={styles.avatarText}>
