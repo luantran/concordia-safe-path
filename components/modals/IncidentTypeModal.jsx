@@ -20,6 +20,7 @@ import ThemedText from './../ThemedText'
 import { INCIDENT_TYPES, IncidentIconMap } from "../../constants/Icons";
 import {useTheme} from "../../contexts/ThemeContext";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
+import {Ionicons} from "@expo/vector-icons";
 
 const IncidentTypeModal = ({ visible, onClose, onSelect }) => {
     const { colorScheme } = useTheme()
@@ -47,9 +48,14 @@ const IncidentTypeModal = ({ visible, onClose, onSelect }) => {
                                 },
                             ]}
                         >
-                            <ThemedText title={true} style={styles.heading}>
-                                Select the Type of Incident
-                            </ThemedText>
+                            <View style={styles.headerRow}>
+                                <ThemedText title={true} style={styles.heading}>
+                                    Select the type of Incident to report
+                                </ThemedText>
+                                <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+                                    <Ionicons name="close" size={24} color={theme.text} />
+                                </TouchableOpacity>
+                            </View>
 
                             {/* 2-column grid of incident type tiles */}
                             <View style={styles.grid}>
@@ -96,7 +102,7 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 24,
+        // marginBottom: 24,
     },
     // Two columns, wrapping onto new rows as needed
     grid: {
@@ -120,5 +126,14 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 14,
         textAlign: 'center',
+    },
+    headerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 24,
+    },
+    closeButton: {
+        padding: 4,
     },
 })
