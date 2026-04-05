@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { StyleSheet, View, Alert, Switch, TouchableOpacity, Text, ScrollView, BackHandler } from 'react-native';
+import { StyleSheet, View, Alert, Switch, TouchableOpacity, Text, ScrollView, BackHandler, Modal } from 'react-native';
 import { useRouter, Stack } from 'expo-router';
 import { useUser } from '../../../hooks/useUser';
 import { useNetwork } from '../../../hooks/useNetwork';
@@ -11,7 +11,7 @@ import ThemedView from "../../../components/ThemedView";
 import ThemedTextInput from "../../../components/ThemedTextInput";
 import ThemedButton from '../../../components/ThemedButton';
 import OfflineActionModal from '../../../components/offline/OfflineActionModal';
-import {Ionicons} from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 const APP_DEFAULTS = {
     darkMode: false,
@@ -35,6 +35,48 @@ const profileToValues = (profile) => ({
     notifVandalism:       profile?.notif_vandalism        ?? APP_DEFAULTS.notifVandalism,
 });
 
+// reusable info modal
+const InfoModal = ({ visible, onClose, title, children, theme }) => (
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+        <TouchableOpacity style={infoStyles.overlay} activeOpacity={1} onPress={onClose}>
+            <TouchableOpacity activeOpacity={1} style={[infoStyles.card, { backgroundColor: theme.uiBackground }]}>
+                <View style={infoStyles.header}>
+                    <ThemedText style={infoStyles.title}>{title}</ThemedText>
+                    <TouchableOpacity onPress={onClose}>
+                        <Ionicons name="close" size={22} color={theme.text} />
+                    </TouchableOpacity>
+                </View>
+                {children}
+            </TouchableOpacity>
+        </TouchableOpacity>
+    </Modal>
+)
+
+const infoStyles = StyleSheet.create({
+    overlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 24,
+    },
+    card: {
+        borderRadius: 16,
+        padding: 20,
+        width: '100%',
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    title: {
+        fontSize: 16,
+        fontWeight: '700',
+    },
+})
+
 const Preferences = () => {
     const { user, profile, updateProfile } = useUser();
     const { checkOnline } = useNetwork();
@@ -43,6 +85,8 @@ const Preferences = () => {
     const router = useRouter();
     const [saving, setSaving] = useState(false);
     const [offlineModal, setOfflineModal] = useState(false);
+    const [distanceInfoVisible, setDistanceInfoVisible] = useState(false);
+    const [soundInfoVisible, setSoundInfoVisible] = useState(false);
     const isFirstTime = !profile?.preferences_completed;
 
     const savedValuesRef = useRef(profileToValues(profile));
@@ -232,9 +276,17 @@ const Preferences = () => {
                     </View>
                 </View>
 
+                {/* distance-based alerts */}
                 <View style={[styles.section, { backgroundColor: theme.uiBackground }]}>
-                    <ThemedText type="defaultSemiBold" style={[styles.sectionTitle, { color: theme.title }]}>Distance-Based Alerts</ThemedText>
-                    <ThemedText style={[styles.helperText, { color: theme.text }]}>Incidents outside these radii will be completely muted.</ThemedText>
+                    <View style={styles.sectionHeaderRow}>
+                        <ThemedText type="defaultSemiBold" style={[styles.sectionTitle, { color: theme.title, marginBottom: 0 }]}>Proximity Alert Zones</ThemedText>
+                        <TouchableOpacity onPress={() => setDistanceInfoVisible(true)} style={styles.infoButton}>
+                            <Ionicons name="information-circle-outline" size={20} color={Colors.primary} />
+                        </TouchableOpacity>
+                    </View>
+                    <ThemedText style={[styles.helperText, { color: theme.text }]}>
+                        Set how close a new incident needs to be before you're notified.
+                    </ThemedText>
                     <View style={styles.distanceRow}>
                         <ThemedText style={styles.distanceLabel}>Normal if under:</ThemedText>
                         <View style={[styles.radiusInputContainer, { backgroundColor: theme.background, borderColor: Colors.divider }]}>
@@ -252,8 +304,15 @@ const Preferences = () => {
                 </View>
 
                 <View style={[styles.section, { backgroundColor: theme.uiBackground }]}>
-                    <ThemedText type="defaultSemiBold" style={[styles.sectionTitle, { color: theme.title }]}>Incident Type Sound</ThemedText>
-                    <ThemedText style={[styles.helperText, { color: theme.text }]}>These settings override the notification sound for incident type.</ThemedText>
+                    <View style={styles.sectionHeaderRow}>
+                        <ThemedText type="defaultSemiBold" style={[styles.sectionTitle, { color: theme.title, marginBottom: 0 }]}>Alert Override by Incident Type</ThemedText>
+                        <TouchableOpacity onPress={() => setSoundInfoVisible(true)} style={styles.infoButton}>
+                            <Ionicons name="information-circle-outline" size={20} color={Colors.primary} />
+                        </TouchableOpacity>
+                    </View>
+                    <ThemedText style={[styles.helperText, { color: theme.text }]}>
+                        Choose how you're alerted for each incident type.
+                    </ThemedText>
                     <View style={{ marginTop: 10 }}>
                         <TriToggle label="Protest"       value={notifProtest}      onValueChange={setNotifProtest} />
                         <View style={[styles.divider, { backgroundColor: Colors.divider }]} />
@@ -274,6 +333,67 @@ const Preferences = () => {
                 <Spacer height={40} />
             </ScrollView>
 
+            {/* distance info modal */}
+            <InfoModal
+                visible={distanceInfoVisible}
+                onClose={() => setDistanceInfoVisible(false)}
+                title="Proximity Alert Zones"
+                theme={theme}
+            >
+                <ThemedText style={styles.infoText}>
+                    CSP monitors your location and alerts you when a nearby incident is reported.
+                </ThemedText>
+                <Spacer height={12} />
+                <View style={styles.infoRow}>
+                    <View style={[styles.infoDot, { backgroundColor: '#007AFF' }]} />
+                    <ThemedText style={styles.infoRowText}>
+                        <ThemedText style={{ fontWeight: '700' }}>Normal alert radius</ThemedText> — incidents within this distance trigger both an in-app and a push notification. Default: 500m.
+                    </ThemedText>
+                </View>
+                <Spacer height={10} />
+                <View style={styles.infoRow}>
+                    <View style={[styles.infoDot, { backgroundColor: '#FF9500' }]} />
+                    <ThemedText style={styles.infoRowText}>
+                        <ThemedText style={{ fontWeight: '700' }}>Silent alert radius</ThemedText> — incidents within this distance send a push notification only, with no in-app banner. Must be larger than the audible radius. Default: 1000m.
+                    </ThemedText>
+                </View>
+                <Spacer height={10} />
+                <ThemedText style={[styles.infoText, { opacity: 0.6 }]}>
+                    Incidents beyond the silent radius are ignored entirely.
+                </ThemedText>
+            </InfoModal>
+            <InfoModal
+                visible={soundInfoVisible}
+                onClose={() => setSoundInfoVisible(false)}
+                title="Notification Style by Incident"
+                theme={theme}
+            >
+                <ThemedText style={styles.infoText}>
+                    Override how you're notified for each incident type, regardless of your distance alert settings.
+                </ThemedText>
+                <Spacer height={12} />
+                <View style={styles.infoRow}>
+                    <View style={[styles.infoDot, { backgroundColor: '#007AFF' }]} />
+                    <ThemedText style={styles.infoRowText}>
+                        <ThemedText style={{ fontWeight: '700' }}>Normal</ThemedText> — in-app banner and push notification.
+                    </ThemedText>
+                </View>
+                <Spacer height={10} />
+                <View style={styles.infoRow}>
+                    <View style={[styles.infoDot, { backgroundColor: '#FF9500' }]} />
+                    <ThemedText style={styles.infoRowText}>
+                        <ThemedText style={{ fontWeight: '700' }}>Silent</ThemedText> — push notification only, no in-app banner.
+                    </ThemedText>
+                </View>
+                <Spacer height={10} />
+                <View style={styles.infoRow}>
+                    <View style={[styles.infoDot, { backgroundColor: '#8E8E93' }]} />
+                    <ThemedText style={styles.infoRowText}>
+                        <ThemedText style={{ fontWeight: '700' }}>Off</ThemedText> — no notification at all. You can still view it in the incidents list.
+                    </ThemedText>
+                </View>
+            </InfoModal>
+
             <OfflineActionModal visible={offlineModal} onClose={() => setOfflineModal(false)} />
         </ThemedView>
     );
@@ -287,6 +407,8 @@ const styles = StyleSheet.create({
     subtitle: { fontSize: 13, opacity: 0.6, marginBottom: 12 },
     section: { marginBottom: 20, padding: 18, borderRadius: 12, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.08, shadowRadius: 3, elevation: 2 },
     sectionTitle: { marginBottom: 15 },
+    sectionHeaderRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
+    infoButton: { padding: 4 },
     helperText: { fontSize: 13, opacity: 0.7, marginTop: 4, marginBottom: 5 },
     settingRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 5 },
     divider: { height: 1, backgroundColor: 'rgba(150, 150, 150, 0.1)', marginVertical: 10 },
@@ -336,5 +458,26 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#fff',
         fontWeight: '500',
+    },
+    infoText: {
+        fontSize: 14,
+        lineHeight: 20,
+    },
+    infoRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        gap: 10,
+    },
+    infoDot: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        marginTop: 4,
+        flexShrink: 0,
+    },
+    infoRowText: {
+        fontSize: 14,
+        lineHeight: 20,
+        flex: 1,
     },
 });
