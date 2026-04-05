@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react"
-import { StyleSheet, View, TouchableOpacity, Keyboard, Text } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Keyboard, Text, Image, Platform } from 'react-native'
 import MapView, { Marker, Circle, Polygon } from "react-native-maps"
 import * as Location from "expo-location"
 
@@ -27,6 +27,7 @@ import { useRouter } from 'expo-router'
 import {Ionicons} from "@expo/vector-icons";
 
 const BUILDING_MARKER = require('../../assets/building_marker.png')
+const BUILDING_MARKER_SIZE = Platform.select({ android: 15, ios: 16, default: 16 })
 
 const DARK_MAP_STYLE = [
   { elementType: 'geometry', stylers: [{ color: '#1d2c4d' }] },
@@ -318,9 +319,14 @@ const Map = () => {
                   key={building.name}
                   coordinate={{ latitude: building.latitude, longitude: building.longitude }}
                   title={building.name}
-                  image={BUILDING_MARKER}
-                  style={{ width: 16, height: 16 }}  // add this
-              />
+                  tracksViewChanges={false}
+              >
+                <Image
+                    source={BUILDING_MARKER}
+                    style={[styles.buildingMarkerImage, { width: BUILDING_MARKER_SIZE, height: BUILDING_MARKER_SIZE }]}
+                    resizeMode="contain"
+                />
+              </Marker>
           ))}
 
           {incidents
@@ -334,7 +340,7 @@ const Map = () => {
                         setSelectedIncidentId(incident.id)
                       }}
                       coordinate={{ latitude: incident.latitude, longitude: incident.longitude }}
-                      tracksViewChanges={true}
+                      tracksViewChanges={selectedIncidentId === incident.id}
                   >
                     <View style={{ alignItems: 'center' }}>
 
@@ -741,6 +747,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.primary,
     fontWeight: '500',
+  },
+  buildingMarkerImage: {
+    width: 0,
+    height: 0,
   },
   safeZoneCompact: {
     position: 'absolute',
