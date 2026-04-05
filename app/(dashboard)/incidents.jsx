@@ -169,7 +169,11 @@ const Incidents = () => {
                                     />
                                 ))}
                                 <View style={styles.sectionDivider} />
-                                <ThemedText style={styles.sectionTitle}>Recent Incidents</ThemedText>
+                                {/* Ongoing section header */}
+                                <View style={styles.sectionHeader}>
+                                    <Ionicons name="shield-checkmark-outline" size={14} color={Colors.badge.verified} />
+                                    <ThemedText style={styles.sectionTitle}>RESOLVED INCIDENTS</ThemedText>
+                                </View>
                             </>
                         )}
                     </>
