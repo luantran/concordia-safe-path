@@ -11,6 +11,7 @@ import ThemedView from "../../../components/ThemedView";
 import ThemedTextInput from "../../../components/ThemedTextInput";
 import ThemedButton from '../../../components/ThemedButton';
 import OfflineActionModal from '../../../components/offline/OfflineActionModal';
+import {Ionicons} from "@expo/vector-icons";
 
 const APP_DEFAULTS = {
     darkMode: false,
@@ -192,11 +193,16 @@ const Preferences = () => {
             <Stack.Screen options={{ headerShown: false, gestureEnabled: !isFirstTime && !prefUpdated }} />
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
 
-                {isFirstTime &&
-                    <ThemedText style={styles.onboardingText}>
-                        Customize your app experience and notification levels.
-                    </ThemedText>
-                }
+                {isFirstTime && (
+                    <View style={styles.onboardingBanner}>
+                        <ThemedText style={styles.onboardingBannerText}>
+                            Customize your safety preferences before getting started. You can always come back to them later.
+                        </ThemedText>
+                        <TouchableOpacity onPress={handleSkip} style={styles.skipPill}>
+                            <ThemedText style={styles.skipPillText}>Skip</ThemedText>
+                        </TouchableOpacity>
+                    </View>
+                )}
 
                 <View style={[styles.section, { backgroundColor: theme.uiBackground }]}>
                     <ThemedText type="defaultSemiBold" style={[styles.sectionTitle, { color: theme.title }]}>App Settings</ThemedText>
@@ -265,12 +271,6 @@ const Preferences = () => {
                     </Text>
                 </ThemedButton>
 
-                {isFirstTime ? (
-                    <TouchableOpacity onPress={handleSkip} style={styles.skip}>
-                        <ThemedText style={{ color: Colors.primary, textAlign: 'center' }}>Skip for now</ThemedText>
-                    </TouchableOpacity>
-                ) : null}
-
                 <Spacer height={40} />
             </ScrollView>
 
@@ -284,7 +284,6 @@ export default Preferences;
 const styles = StyleSheet.create({
     container: { flex: 1 },
     scrollContent: { paddingHorizontal: 20, paddingTop: 20 },
-    onboardingText: { marginBottom: 20, opacity: 0.7, fontSize: 14 },
     subtitle: { fontSize: 13, opacity: 0.6, marginBottom: 12 },
     section: { marginBottom: 20, padding: 18, borderRadius: 12, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.08, shadowRadius: 3, elevation: 2 },
     sectionTitle: { marginBottom: 15 },
@@ -306,4 +305,36 @@ const styles = StyleSheet.create({
     segmentTextActive: { color: '#FFFFFF', fontWeight: 'bold' },
     button: { width: '100%', alignItems: 'center', borderRadius: 30, marginBottom: 16, marginTop: 10 },
     skip: { paddingVertical: 8, marginBottom: 20 },
+    onboardingBanner: {
+        backgroundColor: '#1976D2',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        gap: 12,
+        marginHorizontal: -20,
+        marginTop: -20,
+        marginBottom: 20,
+        borderTopWidth: 2,
+        borderTopColor: 'rgba(255,255,255,0.15)',
+    },
+    onboardingBannerText: {
+        fontSize: 13,
+        color: 'rgba(255,255,255,0.9)',
+        flex: 1,
+        flexWrap: 'wrap',
+    },
+    skipPill: {
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.5)',
+        borderRadius: 20,
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        flexShrink: 0,
+    },
+    skipPillText: {
+        fontSize: 12,
+        color: '#fff',
+        fontWeight: '500',
+    },
 });
