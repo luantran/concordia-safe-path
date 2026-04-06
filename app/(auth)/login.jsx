@@ -34,6 +34,7 @@ import ThemedTextInput from "../../components/ThemedTextInput";
 import RolePickerModal from "../../components/auth/RolePickerModal";
 import AuthHeader from "../../components/auth/AuthHeader";
 import LogoCard from "../../components/auth/LogoCard";
+import PasswordResetModal from "../../components/auth/PasswordResetModal";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -41,6 +42,7 @@ const Login = () => {
     const [error, setError] = useState(null);
     const [roleModalVisible, setRoleModalVisible] = useState(false)
     const [keyboardOpen, setKeyboardOpen] = useState(false)
+    const [resetModalVisible, setResetModalVisible] = useState(false)
 
     const insets = useSafeAreaInsets()
 
@@ -122,7 +124,10 @@ const Login = () => {
                                 icon="lock-closed-outline"
                             />
 
-                            <TouchableOpacity style={{ alignSelf: 'flex-end', marginRight: '35%', marginBottom: 16 }}>
+                            <TouchableOpacity
+                                style={{ alignSelf: 'flex-end', marginRight: '35%', marginBottom: 16 }}
+                                onPress={() => setResetModalVisible(true)}
+                            >
                                 <ThemedText style={{ color: Colors.primary, fontSize: 13 }}>Forgot Password?</ThemedText>
                             </TouchableOpacity>
 
@@ -154,6 +159,10 @@ const Login = () => {
                                 onClose={() => setRoleModalVisible(false)}
                             />
                     </ThemedView>
+                    <PasswordResetModal
+                        visible={resetModalVisible}
+                        onClose={() => setResetModalVisible(false)}
+                    />
                 </View>
             </View>
         </TouchableWithoutFeedback>
