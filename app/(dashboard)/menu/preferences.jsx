@@ -365,7 +365,7 @@ const Preferences = () => {
             <InfoModal
                 visible={soundInfoVisible}
                 onClose={() => setSoundInfoVisible(false)}
-                title="Notification Style by Incident"
+                title="Alert Override by Incident Type"
                 theme={theme}
             >
                 <ThemedText style={styles.infoText}>
