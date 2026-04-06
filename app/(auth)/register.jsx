@@ -13,13 +13,12 @@
 
 import {
     Keyboard,
-    KeyboardAvoidingView,
+    LayoutAnimation,
     StyleSheet,
     Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
     View,
-    Platform, LayoutAnimation
 } from 'react-native'
 import {useEffect, useState} from "react"
 import { useLocalSearchParams, useRouter } from "expo-router"
@@ -27,6 +26,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { useUser } from "../../hooks/useUser"
 import { Colors } from "../../constants/Colors"
+import { useTheme } from "../../contexts/ThemeContext"
 
 // themed components, handle light/dark mode automatically
 import ThemedView from "../../components/ThemedView"
@@ -53,6 +53,8 @@ const Register = () => {
     // register wraps supabase.auth.signUp()
     const { register, setPendingRedirect } = useUser()
     const router = useRouter()
+    const { colorScheme } = useTheme()
+    const theme = Colors[colorScheme] ?? Colors.light
 
     const [keyboardOpen, setKeyboardOpen] = useState(false)
     const insets = useSafeAreaInsets()
@@ -99,37 +101,32 @@ const Register = () => {
     }
 
     return (
-        // handles keyboard overlap on ios vs android differently
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
-            {/* dismiss keyboard when tapping outside inputs */}
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={styles.root}>
+        // dismiss keyboard when tapping outside inputs
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.root}>
 
-                    <EmailConfirmationModal
-                        visible={showConfirmation}
-                        email={email}
-                        onProceed={() => {
-                            setPendingRedirect(false)
-                            router.replace('/login')
-                        }}
-                    />
+                <EmailConfirmationModal
+                    visible={showConfirmation}
+                    email={email}
+                    onProceed={() => {
+                        setPendingRedirect(false)
+                        router.replace('/login')
+                    }}
+                />
 
-                    {/* hide header when keyboard is open to save space */}
-                    {!keyboardOpen && <AuthHeader />}
+                {/* hide header when keyboard is open to save space */}
+                {!keyboardOpen && <AuthHeader />}
 
-                    {/* Logo card positioned absolutely on top of everything */}
-                    {!keyboardOpen && (
-                        <View style={[styles.logoOverlay, { top: insets.top + 60 }]}>
-                            <LogoCard />
-                        </View>
-                    )}
+                {/* logo card positioned absolutely on top of everything */}
+                {!keyboardOpen && (
+                    <View style={[styles.logoOverlay, { top: insets.top + 60 }]}>
+                        <LogoCard />
+                    </View>
+                )}
 
-                    {/* remove rounded corners when keyboard is open, looks weird otherwise */}
-                    <View style={[styles.panelHost, keyboardOpen && styles.panelHostKeyboard]}>
-                        <ThemedView style={[styles.panelClip, styles.container]} safe={false}>
+                {/* remove rounded corners when keyboard is open, looks weird otherwise */}
+                <View style={[styles.panelHost, keyboardOpen && styles.panelHostKeyboard]}>
+                    <ThemedView style={[styles.panelClip, styles.container]} safe={false}>
 
                         {/* title changes based on role */}
                         <ThemedText title={true} style={styles.title}>
@@ -165,7 +162,7 @@ const Register = () => {
                             secureTextEntry
                             icon="lock-closed-outline"
                         />
-                        <Text style={styles.hint}>Password must be at least 6 characters</Text>
+                        <ThemedText style={[styles.hint, { opacity: 0.8 }]}>Password must be at least 6 characters</ThemedText>
 
                         <ThemedTextInput
                             style={styles.input}
@@ -198,11 +195,10 @@ const Register = () => {
                             This app uses its own account system,{'\n'}separate from your university credentials.
                         </ThemedText>
 
-                        </ThemedView>
-                    </View>
+                    </ThemedView>
                 </View>
-            </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+            </View>
+        </TouchableWithoutFeedback>
     )
 }
 
