@@ -93,16 +93,18 @@ Under `expo.android.config`:
 }
 ```
 
-**5. Fill in `eas.json`**
+**5. Set up EAS environment variables**
 
-The `eas.json` file has placeholder values. Replace them with your actual keys before building:
-```json
-"env": {
-  "EXPO_PUBLIC_SUPABASE_URL": "your-actual-url",
-  "EXPO_PUBLIC_SUPABASE_KEY": "your-actual-key",
-  ...
-}
-```
+Go to https://expo.dev → your project → **Environment Variables** and add:
+- `EXPO_PUBLIC_SUPABASE_URL`
+- `EXPO_PUBLIC_SUPABASE_KEY`
+- `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY`
+- `EXPO_PUBLIC_GOOGLE_PLACES_API_KEY`
+- `EXPO_PUBLIC_GOOGLE_DIRECTIONS_API_KEY`
+
+Set each one to the **Preview** environment so they're available during APK builds.
+
+> These are never stored in the codebase: each team member sets them once on expo.dev.
 ---
 
 ## Running the App (Development)
