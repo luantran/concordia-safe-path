@@ -13,19 +13,20 @@
 
 import {
     Keyboard,
-    KeyboardAvoidingView,
+    LayoutAnimation,
     StyleSheet,
     Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
     View,
-    Platform, LayoutAnimation
 } from 'react-native'
 import {useEffect, useState} from "react"
 import { useLocalSearchParams, useRouter } from "expo-router"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { useUser } from "../../hooks/useUser"
 import { Colors } from "../../constants/Colors"
+import { useTheme } from "../../contexts/ThemeContext"
 
 // themed components, handle light/dark mode automatically
 import ThemedView from "../../components/ThemedView"
@@ -34,6 +35,7 @@ import ThemedButton from "../../components/ThemedButton"
 import ThemedTextInput from "../../components/ThemedTextInput"
 import EmailConfirmationModal from "../../components/auth/EmailConfirmationModal"
 import AuthHeader from "../../components/auth/AuthHeader"
+import LogoCard from "../../components/auth/LogoCard"
 
 const Register = () => {
     const { role } = useLocalSearchParams() // 'student' or 'staff', passed from RolePickerModal
@@ -51,8 +53,11 @@ const Register = () => {
     // register wraps supabase.auth.signUp()
     const { register, setPendingRedirect } = useUser()
     const router = useRouter()
+    const { colorScheme } = useTheme()
+    const theme = Colors[colorScheme] ?? Colors.light
 
     const [keyboardOpen, setKeyboardOpen] = useState(false)
+    const insets = useSafeAreaInsets()
 
     // animate layout when keyboard opens/closes so nothing gets covered
     useEffect(() => {
@@ -96,32 +101,32 @@ const Register = () => {
     }
 
     return (
-        // handles keyboard overlap on ios vs android differently
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
-            {/* dismiss keyboard when tapping outside inputs */}
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={styles.root}>
+        // dismiss keyboard when tapping outside inputs
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.root}>
 
-                    <EmailConfirmationModal
-                        visible={showConfirmation}
-                        email={email}
-                        onProceed={() => {
-                            setPendingRedirect(false)
-                            router.replace('/login')
-                        }}
-                    />
+                <EmailConfirmationModal
+                    visible={showConfirmation}
+                    email={email}
+                    onProceed={() => {
+                        setPendingRedirect(false)
+                        router.replace('/login')
+                    }}
+                />
 
-                    {/* hide header when keyboard is open to save space */}
-                    {!keyboardOpen && <AuthHeader />}
+                {/* hide header when keyboard is open to save space */}
+                {!keyboardOpen && <AuthHeader />}
 
-                    {/* remove rounded corners when keyboard is open, looks weird otherwise */}
-                    <ThemedView style={[
-                        styles.container,
-                        keyboardOpen && { marginTop: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0 }
-                    ]} safe={false}>
+                {/* logo card positioned absolutely on top of everything */}
+                {!keyboardOpen && (
+                    <View style={[styles.logoOverlay, { top: insets.top + 60 }]}>
+                        <LogoCard />
+                    </View>
+                )}
+
+                {/* remove rounded corners when keyboard is open, looks weird otherwise */}
+                <View style={[styles.panelHost, keyboardOpen && styles.panelHostKeyboard]}>
+                    <ThemedView style={[styles.panelClip, styles.container]} safe={false}>
 
                         {/* title changes based on role */}
                         <ThemedText title={true} style={styles.title}>
@@ -157,7 +162,7 @@ const Register = () => {
                             secureTextEntry
                             icon="lock-closed-outline"
                         />
-                        <Text style={styles.hint}>Password must be at least 6 characters</Text>
+                        <ThemedText style={[styles.hint, { opacity: 0.8 }]}>Password must be at least 6 characters</ThemedText>
 
                         <ThemedTextInput
                             style={styles.input}
@@ -192,26 +197,46 @@ const Register = () => {
 
                     </ThemedView>
                 </View>
-            </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+            </View>
+        </TouchableWithoutFeedback>
     )
 }
 
 export default Register
 
 const styles = StyleSheet.create({
+    logoOverlay: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        zIndex: 100,
+        pointerEvents: 'box-none',
+    },
+    panelHost: {
+        flex: 1,
+        marginTop: -20,
+        zIndex: 10,
+        overflow: 'visible',
+    },
+    panelHostKeyboard: {
+        marginTop: 0,
+    },
+    panelClip: {
+        borderTopLeftRadius: 44,
+        borderTopRightRadius: 44,
+        overflow: 'hidden',
+    },
     root: {
         flex: 1,
         backgroundColor: Colors.primaryDark,
+        overflow: 'visible',
     },
     container: {
         flex: 1,
         alignItems: "center",
         justifyContent: 'center',
-        borderTopLeftRadius: 50,
-        borderTopRightRadius: 50,
         paddingHorizontal: 28,
-        marginTop: -30, // overlaps slightly over the header
     },
     title: {
         textAlign: "center",

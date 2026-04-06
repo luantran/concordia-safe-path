@@ -34,10 +34,12 @@ import { Ionicons } from "@expo/vector-icons";
 import ThemedMenuItem from "../ThemedMenuItem";
 import { useRouter } from "expo-router";
 import {useTheme} from "../../contexts/ThemeContext";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ThemedDrawer = ({ visible, onClose }) => {
     const { colorScheme } = useTheme()
     const theme = Colors[colorScheme] ?? Colors.light
+    const insets = useSafeAreaInsets()
 
     // user.email is displayed and used to derive the avatar initial
     const { user, logout } = useUser()
@@ -74,9 +76,9 @@ const ThemedDrawer = ({ visible, onClose }) => {
 
                     {/* Drawer panel — stops tap propagation so it doesn't close on self-tap */}
                     <TouchableWithoutFeedback>
-                        <View style={{ width: 300, height: '100%', backgroundColor: theme.navBackground }}>
+                        <View style={{ width: 300, height: '100%', backgroundColor: theme.uiBackground }}>
 
-                            <View style={styles.userSection}>
+                            <View style={[styles.userSection, { paddingTop: insets.top + 10 }]}>
                                 {/* Avatar circle — shows first letter of user's email */}
                                 <View style={[styles.avatar, { backgroundColor: Colors.primary }]}>
                                     <ThemedText style={styles.avatarText}>
@@ -139,7 +141,8 @@ const styles = StyleSheet.create({
     },
     userSection: {
         alignItems: 'center',
-        paddingVertical: 20,
+        paddingTop: 0,
+        paddingBottom: 20,
         gap: 12,
     },
     avatar: {

@@ -22,7 +22,12 @@ const IncidentHeader = ({ incident, isFollowing, followLoading, onFollow }) => (
                 {incident.severity.charAt(0).toUpperCase() + incident.severity.slice(1) + " tension"}
             </ThemedText>
             <View style={styles.titleRow}>
-                <ThemedText style={styles.title}>
+                <ThemedText
+                    style={styles.title}
+                    numberOfLines={1}
+                    adjustsFontSizeToFit
+                    minimumFontScale={0.7}
+                >
                     {incident.type.charAt(0).toUpperCase() + incident.type.slice(1)}
                 </ThemedText>
                 <TouchableOpacity

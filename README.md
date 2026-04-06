@@ -1,3 +1,5 @@
+# ConSafe Path
+
 A React Native mobile application designed to help Concordia University students navigate campus safely during disruptions such as protests, construction, and emergencies.
 
 ---
@@ -7,20 +9,54 @@ A React Native mobile application designed to help Concordia University students
 Make sure you have the following installed before starting:
 
 - [Node.js](https://nodejs.org/) (v18 or higher)
-- [Expo CLI](https://docs.expo.dev/get-started/installation/): `npm install -g expo-cli`
 - [Git](https://git-scm.com/)
+- [EAS CLI](https://docs.expo.dev/build/setup/): `npm install -g eas-cli`
 - Either:
-    - **Expo Go** app on your physical device ([iOS](https://apps.apple.com/app/expo-go/id982107779) / [Android](https://play.google.com/store/apps/details?id=host.exp.exponent))
-    - **Android Emulator** via [Android Studio](https://developer.android.com/studio)
-      - https://docs.expo.dev/workflow/android-studio-emulator/
-    - **iOS Simulator** via Xcode (macOS only)
-      - https://docs.expo.dev/workflow/ios-simulator/
+    - **Android Studio** for emulator/dev builds → https://docs.expo.dev/workflow/android-studio-emulator/
+    - A **physical Android device** with USB debugging enabled
+
 ---
 
+## Accounts Required
+
+You will need accounts on the following services. All have free tiers sufficient for development.
+
+### 1. Supabase
+- Go to https://supabase.com and create a project
+- Note your **Project URL** and **Publishable (anon) key** from Project Settings → API
+- Run the schema (see below)
+
+### 2. Google Cloud
+You need three API keys from https://console.cloud.google.com:
+- **Maps SDK for Android** → used for the map view
+- **Places API** → used for location search autocomplete
+- **Directions API** → used for safe route calculation
+
+Steps:
+1. Create a project in Google Cloud Console
+2. Enable the three APIs above under **APIs & Services → Library**
+3. Go to **APIs & Services → Credentials → Create Credentials → API Key**
+4. Restrict each key to your app's package name: `com.soen6751.concordia_safe_path`
+
+> You can use a single key for all three APIs or create separate keys per API.
+
+### 3. Expo / EAS
+- Create an account at https://expo.dev
+- Run `eas login` and `eas init` to link the project
+- Update the `projectId` in `app.json` under `extra.eas` with your own project ID
+
+---
 
 ## Supabase Database Setup
 
-The app requires a Supabase project with the following table. Find the schema.sql file in the supabase folder and paste the content in the **Supabase SQL Editor**.
+1. Open your Supabase project
+2. Go to **SQL Editor**
+3. Paste and run the contents of `supabase/schema.sql`
+
+This will create all tables, policies, and enable Realtime for `incidents`, `notifications`, and `comments` automatically.
+
+> **Email confirmation** is disabled by default in this project. If your Supabase project has it enabled, go to **Authentication → Providers → Email** and turn off **Confirm email** — otherwise users won't be able to log in after registering.
+---
 
 ## Setup
 
@@ -39,35 +75,75 @@ npm install
 
 Create a `.env` file in the project root:
 ```
-EXPO_PUBLIC_SUPABASE_URL=your_supabase_project_url
-EXPO_PUBLIC_SUPABASE_KEY=your_supabase_anon_key
+EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+EXPO_PUBLIC_SUPABASE_KEY=your-supabase-anon-key
+EXPO_PUBLIC_GOOGLE_MAPS_API_KEY=your-google-maps-key
+EXPO_PUBLIC_GOOGLE_PLACES_API_KEY=your-google-places-key
+EXPO_PUBLIC_GOOGLE_DIRECTIONS_API_KEY=your-google-directions-key
 ```
 
-Get these values from the Supabase dashboard:
-1. Go to https://supabase.com and open your project
-2. On the home page, you'll have a url, it should look like (https://****.supabase.co), that's the one, replace that in your env file  → paste as EXPO_PUBLIC_SUPABASE_URL
-2. Click **Project Settings** (gear icon, bottom of left sidebar)
-3. Click **API** under the Configuration section
-5. Copy **publishable** key under Project API keys → paste as EXPO_PUBLIC_SUPABASE_KEY
-**4. Start the app**
+**4. Add Google Maps key to `app.json`**
+
+Under `expo.android.config`:
+```json
+"config": {
+  "googleMaps": {
+    "apiKey": "your-google-maps-key"
+  }
+}
+```
+
+**5. Fill in `eas.json`**
+
+The `eas.json` file has placeholder values. Replace them with your actual keys before building:
+```json
+"env": {
+  "EXPO_PUBLIC_SUPABASE_URL": "your-actual-url",
+  "EXPO_PUBLIC_SUPABASE_KEY": "your-actual-key",
+  ...
+}
+```
+---
+
+## Running the App (Development)
+
 ```bash
 npx expo start
 ```
 
-Make sure your phones and computers are on the same wifi and that your computer "trusts" this wifi (choose "I trust this wifi" in your wifi setting). Anti-virus can complicate things. Also
-
----
-
-## Running the App
-
 | Platform | Command | Notes |
 |---|---|---|
 | Android Emulator | Press `a` in terminal | Emulator must be running first |
-| iOS Simulator | Press `i` in terminal | macOS only |
-| Physical device | Scan QR code with Expo Go | Must be on same WiFi network |
-Not sure about the iOS one, tbh
+| Physical device (Expo Go) | Scan QR code | Must be on same WiFi network |
+
+> Note: Push notifications and some native features do not work in Expo Go. Use a dev build for full functionality.
+
 ---
 
+## Building a Dev Build (Recommended)
+
+A dev build gives you native rendering with live reload — better than Expo Go for testing:
+
+```bash
+npx expo prebuild --platform android
+npx expo run:android
+```
+
+Your device must be connected via USB with USB debugging enabled.
+
+---
+
+## Building a Preview APK
+
+To generate an installable APK for testing on any Android device:
+
+```bash
+eas build --platform android --profile preview
+```
+
+Download the APK from https://expo.dev once the build completes and install it on your device.
+
+> Make sure `eas.json` has your real API keys filled in before building.
 
 ---
 
@@ -75,61 +151,21 @@ Not sure about the iOS one, tbh
 
 ```
 app/
-├── (auth)/           ← Login & Register screens
-├── (dashboard)/      ← Main app tabs
-│   ├── incidents/    ← Incident feed + detail
-│   │   ├── index.jsx
-│   │   └── [id].jsx
-│   ├── create.jsx    ← Report an incident
-│   ├── map.jsx       ← Campus map with incident pins
-│   └── profile.jsx   ← User profile + logout
-├── _layout.jsx       ← Root layout + providers
+├── (auth)/               ← Login & Register screens
+├── (dashboard)/          ← Main app tabs
+│   ├── incidents/        ← Incident feed
+│   │   └── [id].jsx      ← Incident detail
+│   ├── create.jsx        ← Report an incident
+│   ├── map.jsx           ← Campus map with incident pins
+│   ├── notifications.jsx ← Notification history
+│   └── menu/             ← Profile, preferences, resources, FAQ
+├── _layout.jsx           ← Root layout + providers
 
-components/           ← Reusable themed components
-contexts/             ← React context (User, Incidents)
-hooks/                ← useUser, useIncidents
-lib/                  ← Supabase client
-constants/            ← Colors/theme
+components/               ← Reusable themed components
+contexts/                 ← React context (User, Incidents, Notifications, Theme)
+hooks/                    ← useUser, useIncidents, useIncidentDetail, etc.
+lib/                      ← Supabase client, helpers, navigationStore
+constants/                ← Colors, Icons, Incidents
+supabase/                 ← schema.sql
 ```
 
----
-
-## Common Pitfalls
-
-**Environment variables not loading**
-- Make sure the file is named exactly `.env` (not `.env.local`)
-- All variables must start with `EXPO_PUBLIC_`
-- Restart the bundler completely after editing: `npx expo start --clear`
-
-**`supabaseUrl is required` error**
-- Your `.env` file isn't being read — see above
-
-**Blank screen on emulator**
-- Press `a` in the terminal to explicitly open on Android
-- Make sure the emulator is fully booted before running `expo start`
-
-**Location not working on emulator**
-- Set a mock location in the emulator: **⋮ → Location** and enter coordinates manually
-- Concordia SGW campus: `45.4972, -73.5789`
-
-**Map not showing / slow to load**
-- This is normal on first load — map tiles need to download
-- On emulator, map performance is slower than a real device
-
-**Incidents not updating in real time**
-- Make sure Realtime is enabled for the `incidents` table in Supabase: **Database → Publications → supabase_realtime**
-
-**`Cannot read property 'filter' of null`**
-- Initial state for incidents must be `[]` not `null` in `IncidentsContext.jsx`
-
-**Rules of Hooks error on `ThemedView`**
-- `useSafeAreaInsets` must always be called unconditionally at the top of the component — never after an early return
-
----
-
-## Tech Stack
-
-- [Expo](https://expo.dev/) + [Expo Router](https://expo.github.io/router/) — React Native framework & file-based routing
-- [Supabase](https://supabase.com/) — Backend, authentication, and real-time database
-- [react-native-maps](https://github.com/react-native-maps/react-native-maps) — Map rendering
-- [expo-location](https://docs.expo.dev/versions/latest/sdk/location/) — Device GPS

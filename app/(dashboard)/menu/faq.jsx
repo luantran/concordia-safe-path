@@ -4,11 +4,11 @@ import {
     ScrollView,
     TouchableOpacity,
     View,
-    useColorScheme,
 } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../../../constants/Colors';
+import { useTheme } from '../../../contexts/ThemeContext';
 import ThemedView from '../../../components/ThemedView';
 import ThemedText from '../../../components/ThemedText';
 
@@ -124,7 +124,7 @@ const FAQ_ITEMS = [
 const FAQItem = ({ item, isExpanded, onPress, theme }) => {
     return (
         <TouchableOpacity
-            style={[styles.faqItemContainer, { borderColor: theme.border, backgroundColor: theme.uiBackground }]}
+            style={[styles.faqItemContainer, { borderColor: Colors.divider, backgroundColor: theme.uiBackground }]}
             onPress={onPress}
             activeOpacity={0.7}
         >
@@ -140,7 +140,7 @@ const FAQItem = ({ item, isExpanded, onPress, theme }) => {
                 />
             </View>
             {isExpanded && (
-                <View style={styles.answerContainer}>
+                <View style={[styles.answerContainer, { borderTopColor: Colors.divider }]}>
                     <ThemedText style={styles.answer}>{item.answer}</ThemedText>
                 </View>
             )}
@@ -149,9 +149,8 @@ const FAQItem = ({ item, isExpanded, onPress, theme }) => {
 };
 
 const FAQ = () => {
-    const colorScheme = useColorScheme();
+    const { colorScheme } = useTheme();
     const theme = Colors[colorScheme] ?? Colors.light;
-    const router = useRouter();
     const [expandedIds, setExpandedIds] = useState([]);
 
     const handleToggle = useCallback((id) => {
@@ -175,7 +174,7 @@ const FAQ = () => {
                 showsVerticalScrollIndicator={false}
             >
                 <View style={styles.header}>
-                    <ThemedText style={styles.headerSubtitle}>
+                    <ThemedText style={[styles.headerSubtitle, { color: theme.text }]}>
                         Find answers to common questions about Concordia Safe Path
                     </ThemedText>
                 </View>
@@ -213,7 +212,6 @@ const styles = StyleSheet.create({
     },
     headerSubtitle: {
         fontSize: 14,
-        opacity: 0.7,
     },
     faqList: {
         marginBottom: 24,
@@ -241,12 +239,10 @@ const styles = StyleSheet.create({
         marginTop: 12,
         paddingTop: 12,
         borderTopWidth: 1,
-        borderTopColor: 'rgba(0, 0, 0, 0.1)',
     },
     answer: {
         fontSize: 14,
         lineHeight: 22,
-        opacity: 0.8,
     },
     footer: {
         paddingVertical: 20,

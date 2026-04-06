@@ -2,13 +2,11 @@
 // falls back to the OS setting when no preference is saved
 
 import { createContext, useContext, useState, useEffect } from 'react'
-import { useColorScheme as useSystemScheme } from 'react-native'
 import { UserContext } from './UserContext'
 
 const ThemeContext = createContext()
 
 export function ThemeProvider({ children }) {
-    const systemScheme = useSystemScheme()
     const userCtx = useContext(UserContext)
     const profile = userCtx?.profile
 
@@ -21,7 +19,7 @@ export function ThemeProvider({ children }) {
         else if (profile?.dark_mode === false) setOverride('light')
     }, [profile?.dark_mode])
 
-    const colorScheme = override ?? systemScheme ?? 'light'
+    const colorScheme = override ?? 'light'
 
     // call this from preferences toggle for instant feedback
     const setDarkMode = (enabled) => {

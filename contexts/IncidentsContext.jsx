@@ -24,7 +24,8 @@
  *  - Add anonymous submission support (omit user_id or use a flag)
  */
 
-import {createContext, useCallback, useEffect, useState} from 'react'
+import { createContext, useCallback, useEffect, useRef, useState } from 'react'
+import { AppState } from 'react-native'
 import { supabase } from '../lib/supabase'
 import { useUser } from "../hooks/useUser";
 import {useNetwork} from "../hooks/useNetwork";
@@ -38,7 +39,7 @@ export function IncidentsProvider({ children }) {
     const [incidents, setIncidents] = useState([])
     const { user } = useUser()
     const { isOnline } = useNetwork()
-
+    const appState = useRef(AppState.currentState)
 
     /**
      * Loads all incidents from the database and replaces local state.
@@ -100,10 +101,23 @@ export function IncidentsProvider({ children }) {
         }
     }
 
+    // re-fetch and reconnect realtime when app comes back to foreground
     useEffect(() => {
-        // If  user logs out, clear local incidents list immediately
-        // to prevent a previous user's data from being visible to the next.
-        // TODO: to remove, logic from the tutorial
+        const subscription = AppState.addEventListener('change', (nextState) => {
+            if (appState.current.match(/inactive|background/) && nextState === 'active') {
+                if (user?.id && isOnline) {
+                    fetchIncidents()
+                    supabase.realtime.connect()
+                }
+            }
+            appState.current = nextState
+        })
+        return () => subscription.remove()
+    }, [user?.id, isOnline, fetchIncidents])
+
+    useEffect(() => {
+        // if user logs out, clear local incidents list immediately
+        // to prevent a previous user's data from being visible to the next
         if (!user?.id) {
             setIncidents([])
             return

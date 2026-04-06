@@ -9,7 +9,17 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "YOUR_SUPABASE_URL",
+        "EXPO_PUBLIC_SUPABASE_KEY": "YOUR_SUPABASE_KEY",
+        "EXPO_PUBLIC_GOOGLE_MAPS_API_KEY": "YOUR_GOOGLE_MAPS_API_KEY",
+        "EXPO_PUBLIC_GOOGLE_PLACES_API_KEY": "YOUR_GOOGLE_PLACES_API_KEY",
+        "EXPO_PUBLIC_GOOGLE_DIRECTIONS_API_KEY": "YOUR_GOOGLE_DIRECTIONS_API_KEY"
+      }
     },
     "production": {
       "autoIncrement": true
