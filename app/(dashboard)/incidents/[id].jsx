@@ -197,13 +197,15 @@ const IncidentDetails = () => {
                                 </TouchableOpacity>
                             )}
                         </View>
-                        <TouchableOpacity
-                            style={styles.rightButton}
-                            onPress={() => router.push({ pathname: '/map', params: { alertIncidentId: incident.id, alertTrigger: Date.now() } })}
-                        >
-                            <Ionicons name="map-outline" size={24} color={Colors.primary} />
-                            <ThemedText style={styles.rightButtonText}>View on Map</ThemedText>
-                        </TouchableOpacity>
+                        {incident.status !== 'resolved' && (
+                            <TouchableOpacity
+                                style={styles.rightButton}
+                                onPress={() => router.push({ pathname: '/map', params: { alertIncidentId: incident.id, alertTrigger: Date.now() } })}
+                            >
+                                <Ionicons name="map-outline" size={24} color={Colors.primary} />
+                                <ThemedText style={styles.rightButtonText}>View on Map</ThemedText>
+                            </TouchableOpacity>
+                        )}
                     </View>
                 </View>
 
