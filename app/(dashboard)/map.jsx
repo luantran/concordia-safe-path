@@ -319,14 +319,9 @@ const Map = () => {
                   key={building.name}
                   coordinate={{ latitude: building.latitude, longitude: building.longitude }}
                   title={building.name}
+                  image={BUILDING_MARKER}
                   tracksViewChanges={false}
-              >
-                <Image
-                    source={BUILDING_MARKER}
-                    style={[styles.buildingMarkerImage, { width: BUILDING_MARKER_SIZE, height: BUILDING_MARKER_SIZE }]}
-                    resizeMode="contain"
-                />
-              </Marker>
+              />
           ))}
 
           {incidents
@@ -757,8 +752,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   buildingMarkerImage: {
-    width: 0,
-    height: 0,
+    width: BUILDING_MARKER_SIZE,
+    height: BUILDING_MARKER_SIZE,
   },
   safeZoneCompact: {
     position: 'absolute',
