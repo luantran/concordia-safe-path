@@ -234,8 +234,8 @@ const Preferences = () => {
                 </View>
 
                 <View style={[styles.section, { backgroundColor: theme.uiBackground }]}>
-                    <ThemedText type="defaultSemiBold" style={[styles.sectionTitle, { color: theme.title }]}>Incident Type Sound</ThemedText>
-                    <ThemedText style={[styles.helperText, { color: theme.text }]}>These settings override the notification sound for incident type.</ThemedText>
+                    <ThemedText type="defaultSemiBold" style={[styles.sectionTitle, { color: theme.title }]}>Incident Type Overrides</ThemedText>
+                    <ThemedText style={[styles.helperText, { color: theme.text }]}>These settings override the distance rules above.</ThemedText>
                     <View style={{ marginTop: 10 }}>
                         <TriToggle label="Protest"       value={notifProtest}      onValueChange={setNotifProtest} />
                         <View style={[styles.divider, { backgroundColor: Colors.divider }]} />
