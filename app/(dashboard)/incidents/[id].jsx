@@ -4,7 +4,7 @@ import {
     KeyboardAvoidingView,
     Platform,
     TouchableOpacity,
-    Alert, BackHandler
+    Alert, BackHandler, TextInput, ScrollView
 } from "react-native"
 import { useLocalSearchParams } from "expo-router"
 import { Ionicons } from "@expo/vector-icons"
@@ -29,11 +29,16 @@ import { timeAgo, getDistance, formatDistance } from '../../../lib/helpers'
 import { Colors } from '../../../constants/Colors'
 import {useEffect} from "react";
 import {clearBackOverride, setBackOverride} from "../../../lib/navigationStore";
+import {useTheme} from "../../../contexts/ThemeContext";
 
 const IncidentDetails = () => {
     const { id, fromTab } = useLocalSearchParams()
     const { isOnline } = useNetwork()
     const router = useRouter()
+
+    const { colorScheme } = useTheme()
+    const theme = Colors[colorScheme] ?? Colors.light
+    const isDark = colorScheme === 'dark'
 
     const {
         incident,
@@ -151,107 +156,129 @@ const IncidentDetails = () => {
         <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={110}
+            keyboardVerticalOffset={130}
         >
             <ThemedView style={styles.container}>
 
-                {/* header + location share a right column so delete and map link align */}
-                <View style={styles.topSection}>
-                    <View style={styles.topLeft}>
-                        <IncidentHeader
-                            incident={incident}
-                            isFollowing={isFollowing}
-                            followLoading={followLoading}
-                            onFollow={handleFollow}
-                            userId={userId}
-                        />
+                    {/* header + location share a right column so delete and map link align */}
+                    <View style={styles.topSection}>
+                        <View style={styles.topLeft}>
+                            <IncidentHeader
+                                incident={incident}
+                                isFollowing={isFollowing}
+                                followLoading={followLoading}
+                                onFollow={handleFollow}
+                                userId={userId}
+                            />
 
-                        <Spacer height={10} />
+                            <Spacer height={10} />
 
-                        <View style={styles.location}>
-                            <Ionicons name="location" size={16} color="#B74949" />
-                            {userLocation && incident.latitude && incident.longitude && (
-                                <ThemedText>
-                                    {formatDistance(getDistance(userLocation.latitude, userLocation.longitude, incident.latitude, incident.longitude))} away
+                            <View style={styles.location}>
+                                <Ionicons name="location" size={16} color="#B74949" />
+                                {userLocation && incident.latitude && incident.longitude && (
+                                    <ThemedText>
+                                        {formatDistance(getDistance(userLocation.latitude, userLocation.longitude, incident.latitude, incident.longitude))} away
+                                    </ThemedText>
+                                )}
+                            </View>
+
+                            <Spacer height={10} />
+
+                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                <View style={styles.activeDot} />
+                                <ThemedText style={styles.time}>
+                                    {(incident.user_id === userId ? "You reported this " : "Reported ") + timeAgo(incident.created_at)}
                                 </ThemedText>
-                            )}
+                            </View>
                         </View>
 
-                        <Spacer height={10} />
-
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <View style={styles.activeDot} />
-                            <ThemedText style={styles.time}>
-                                {(incident.user_id === userId ? "You reported this " : "Reported ") + timeAgo(incident.created_at)}
-                            </ThemedText>
-                        </View>
-                    </View>
-
-                    {/* right column — delete at top, view on map at bottom */}
-                    <View style={styles.rightColumn}>
-                        <View style={styles.rightTop}>
-                            {incident.user_id === userId && (
-                                <TouchableOpacity onPress={confirmDelete} style={styles.rightButton}>
-                                    <Ionicons name="trash-outline" size={22} color="#FF3B30" />
-                                    <ThemedText style={[styles.rightButtonText, { color: '#FF3B30' }]}>Delete</ThemedText>
+                        {/* right column — delete at top, view on map at bottom */}
+                        <View style={styles.rightColumn}>
+                            <View style={styles.rightTop}>
+                                {incident.user_id === userId && (
+                                    <TouchableOpacity onPress={confirmDelete} style={styles.rightButton}>
+                                        <Ionicons name="trash-outline" size={22} color="#FF3B30" />
+                                        <ThemedText style={[styles.rightButtonText, { color: '#FF3B30' }]}>Delete</ThemedText>
+                                    </TouchableOpacity>
+                                )}
+                            </View>
+                            {incident.status !== 'resolved' && (
+                                <TouchableOpacity
+                                    style={styles.rightButton}
+                                    onPress={() => router.push({ pathname: '/map', params: { alertIncidentId: incident.id, alertTrigger: Date.now() } })}
+                                >
+                                    <Ionicons name="map-outline" size={24} color={Colors.primary} />
+                                    <ThemedText style={styles.rightButtonText}>View on Map</ThemedText>
                                 </TouchableOpacity>
                             )}
                         </View>
-                        {incident.status !== 'resolved' && (
-                            <TouchableOpacity
-                                style={styles.rightButton}
-                                onPress={() => router.push({ pathname: '/map', params: { alertIncidentId: incident.id, alertTrigger: Date.now() } })}
-                            >
-                                <Ionicons name="map-outline" size={24} color={Colors.primary} />
-                                <ThemedText style={styles.rightButtonText}>View on Map</ThemedText>
-                            </TouchableOpacity>
-                        )}
                     </View>
+
+                    <Spacer height={5} />
+
+                    {incident.description && (
+                        <View style={styles.descriptionContainer}>
+                            <ThemedText style={styles.descriptionText}>
+                                {incident.description}
+                            </ThemedText>
+                        </View>
+                    )}
+
+                    <View style={styles.separator} />
+
+                    <IncidentProgress incident={incident} netVotes={netVotes} />
+
+                    <View style={styles.separator} />
+
+                    <IncidentInteractions
+                        incident={incident}
+                        userVote={userVote}
+                        voteLoading={voteLoading}
+                        actionLoading={actionLoading}
+                        isStaff={isStaff}
+                        userId={userId}
+                        onVote={handleVote}
+                        onWitnessed={handleWitnessed}
+                        onVerify={handleVerify}
+                        onResolve={handleResolve}
+                        onDelete={confirmDelete}
+                        isFollowing={isFollowing}
+                        followLoading={followLoading}
+                        onFollow={handleFollow}
+                    />
+
+                    <View style={styles.separator} />
+                <ScrollView
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{ paddingBottom: 10 }}
+                >
+                    <CommentsSection
+                        comments={comments}
+                        commentText={commentText}
+                        commentLoading={commentLoading}
+                        onChangeText={setCommentText}
+                        onSubmit={handleComment}
+                    />
+                </ScrollView>
+                {/* input pinned at bottom */}
+                <View style={[styles.addCommentContainer, { backgroundColor: theme.uiBackground }]}>
+                    <TextInput
+                        style={[styles.commentInput, isDark && { backgroundColor: '#2f2b3d', borderColor: '#3a3650', color: '#d4d4d4' }]}
+                        placeholder="Add a comment..."
+                        placeholderTextColor={isDark ? '#9591a5' : '#999'}
+                        value={commentText}
+                        onChangeText={setCommentText}
+                        returnKeyType="send"
+                        onSubmitEditing={handleComment}
+                    />
+                    <TouchableOpacity
+                        style={[styles.commentButton, (!commentText.trim() || commentLoading) && styles.commentButtonDisabled]}
+                        onPress={handleComment}
+                        disabled={!commentText.trim() || commentLoading}
+                    >
+                        <Ionicons name="send" size={20} color="#fff" />
+                    </TouchableOpacity>
                 </View>
-
-                <Spacer height={5} />
-
-                {incident.description && (
-                    <View style={styles.descriptionContainer}>
-                        <ThemedText style={styles.descriptionText}>
-                            {incident.description}
-                        </ThemedText>
-                    </View>
-                )}
-
-                <View style={styles.separator} />
-
-                <IncidentProgress incident={incident} netVotes={netVotes} />
-
-                <View style={styles.separator} />
-
-                <IncidentInteractions
-                    incident={incident}
-                    userVote={userVote}
-                    voteLoading={voteLoading}
-                    actionLoading={actionLoading}
-                    isStaff={isStaff}
-                    userId={userId}
-                    onVote={handleVote}
-                    onWitnessed={handleWitnessed}
-                    onVerify={handleVerify}
-                    onResolve={handleResolve}
-                    onDelete={confirmDelete}
-                    isFollowing={isFollowing}
-                    followLoading={followLoading}
-                    onFollow={handleFollow}
-                />
-
-                <View style={styles.separator} />
-
-                <CommentsSection
-                    comments={comments}
-                    commentText={commentText}
-                    commentLoading={commentLoading}
-                    onChangeText={setCommentText}
-                    onSubmit={handleComment}
-                />
-
                 <OfflineActionModal
                     visible={offlineModal}
                     onClose={() => setOfflineModal(false)}
@@ -356,5 +383,33 @@ const styles = StyleSheet.create({
         fontSize: 14,
         lineHeight: 20,
         opacity: 0.75,
+    },
+    addCommentContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 5,
+        paddingVertical: 8,
+        paddingHorizontal: 20,
+        borderTopWidth: 1,
+        borderTopColor: "#E0E0E0",
+        marginHorizontal: -20,
+    },
+    commentInput: {
+        flex: 1,
+        height: 40,
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 20,
+        paddingHorizontal: 12,
+        backgroundColor: "#fff",
+        color: "#000",
+    },
+    commentButton: {
+        backgroundColor: "#59A7E7",
+        padding: 10,
+        borderRadius: 20,
+    },
+    commentButtonDisabled: {
+        opacity: 0.4,
     },
 })
