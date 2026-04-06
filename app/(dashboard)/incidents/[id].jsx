@@ -4,7 +4,7 @@ import {
     KeyboardAvoidingView,
     Platform,
     TouchableOpacity,
-    Alert
+    Alert, BackHandler
 } from "react-native"
 import { useLocalSearchParams } from "expo-router"
 import { Ionicons } from "@expo/vector-icons"
@@ -27,9 +27,11 @@ import { useNetwork } from '../../../hooks/useNetwork'
 
 import { timeAgo, getDistance, formatDistance } from '../../../lib/helpers'
 import { Colors } from '../../../constants/Colors'
+import {useEffect} from "react";
+import {clearBackOverride, setBackOverride} from "../../../lib/navigationStore";
 
 const IncidentDetails = () => {
-    const { id } = useLocalSearchParams()
+    const { id, fromTab } = useLocalSearchParams()
     const { isOnline } = useNetwork()
     const router = useRouter()
 
@@ -59,6 +61,46 @@ const IncidentDetails = () => {
 
     const { locationRef } = useNotificationsContext()
     const userLocation = locationRef?.current
+
+    useEffect(() => {
+        const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+            if (fromTab === 'map') {
+                router.replace({
+                    pathname: '/(dashboard)/map',
+                    params: {
+                        alertIncidentId: id,
+                        alertTrigger: Date.now()
+                    }
+                })
+                return true
+            }else if (fromTab === 'notifications') {
+                router.replace({
+                    pathname: '/(dashboard)/notifications',
+                })
+                return true
+            }
+            return false
+        })
+        return () => subscription.remove()
+    }, [fromTab, id])
+
+    useEffect(() => {
+        if (fromTab === 'map') {
+            setBackOverride(() => {
+                router.replace({
+                    pathname: '/(dashboard)/map',
+                    params: { alertIncidentId: id, alertTrigger: Date.now() }
+                })
+            })
+        } else if(fromTab === 'notifications'){
+            setBackOverride(() => {
+                router.replace({
+                    pathname: '/(dashboard)/notifications',
+                })
+            })
+        }
+        return () => clearBackOverride()
+    }, [fromTab, id])
 
     if (!incident && isOnline === false) {
         return (

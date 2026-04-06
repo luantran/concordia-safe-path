@@ -443,7 +443,15 @@ const Map = () => {
                   setSelectedIncident(null)
                   setSelectedIncidentId(null)
                   setAlertIncidentId(null)
-                  router.push(`/incidents/${selectedIncident.id}`)
+                  router.push({
+                    pathname: '/incidents/[id]',
+                    params: {
+                      id: selectedIncident.id,
+                      fromTab: 'map',
+                      alertIncidentId: selectedIncident.id,
+                      alertTrigger: Date.now()
+                    }
+                  })
                 }}
                 activeOpacity={0.9}
             >

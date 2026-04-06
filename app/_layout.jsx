@@ -8,36 +8,11 @@ import { NetworkProvider } from "../contexts/NetworkContext";
 import {ThemeProvider} from "../contexts/ThemeContext";
 import React from 'react'
 
-
-class ErrorBoundary extends React.Component {
-    state = { error: null }
-    componentDidCatch(error) {
-        this.setState({ error })
-    }
-    render() {
-        if (this.state.error) {
-            return (
-                <ScrollView style={{ flex: 1, padding: 40, backgroundColor: '#fff' }}>
-                    <Text style={{ color: 'red', fontSize: 16, fontWeight: 'bold' }}>CRASH:</Text>
-                    <Text style={{ color: 'red', fontSize: 12, marginTop: 10 }}>
-                        {this.state.error.toString()}
-                    </Text>
-                    <Text style={{ color: '#333', fontSize: 11, marginTop: 10 }}>
-                        {this.state.error.stack}
-                    </Text>
-                </ScrollView>
-            )
-        }
-        return this.props.children
-    }
-}
-
 const RootLayout = () => {
     const colorScheme = useColorScheme();
     const theme = Colors[colorScheme] ?? Colors[colorScheme];
 
     return (
-        <ErrorBoundary>
             <NetworkProvider>
                 <UserProvider>
                     <ThemeProvider>
@@ -55,7 +30,6 @@ const RootLayout = () => {
                     </ThemeProvider>
                 </UserProvider>
             </NetworkProvider>
-        </ErrorBoundary>
     );
 };
 
