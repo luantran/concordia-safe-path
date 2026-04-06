@@ -340,7 +340,7 @@ const Map = () => {
                         setSelectedIncidentId(incident.id)
                       }}
                       coordinate={{ latitude: incident.latitude, longitude: incident.longitude }}
-                      tracksViewChanges={selectedIncidentId === incident.id}
+                      tracksViewChanges={false}
                   >
                     <View style={{ alignItems: 'center' }}>
 
