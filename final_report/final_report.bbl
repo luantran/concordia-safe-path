@@ -1,0 +1,59 @@
+\begin{thebibliography}{10}
+
+\bibitem{designcouncil2005}
+{Design Council}.
+\newblock A study of the design process: The double diamond.
+\newblock Technical report, Design Council, 2005.
+
+\bibitem{nielsen1994usability}
+Jakob Nielsen.
+\newblock {\em Usability Engineering}.
+\newblock Morgan Kaufmann, San Francisco, CA, 1994.
+
+\bibitem{weiser1996calm}
+Mark Weiser and John~Seely Brown.
+\newblock Designing calm technology.
+\newblock {\em PowerGrid Journal}, 1(1):75--85, 1996.
+
+\bibitem{wcag21}
+Andrew Kirkpatrick, Joshue~O Connor, Alastair Campbell, and Michael Cooper.
+\newblock {Web Content Accessibility Guidelines (WCAG) 2.1}.
+\newblock Technical report, World Wide Web Consortium (W3C), 2018.
+\newblock W3C Recommendation.
+
+\bibitem{fitts1954information}
+Paul~M. Fitts.
+\newblock The information capacity of the human motor system in controlling the amplitude of movement.
+\newblock {\em Journal of Experimental Psychology}, 47(6):381--391, 1954.
+
+\bibitem{sweller1988cognitive}
+John Sweller.
+\newblock Cognitive load during problem solving: Effects on learning.
+\newblock {\em Cognitive Science}, 12(2):257--285, 1988.
+
+\bibitem{cooper1999inmates}
+Alan Cooper.
+\newblock {\em The Inmates Are Running the Asylum: Why High-Tech Products Drive Us Crazy and How to Restore the Sanity}.
+\newblock Sams Publishing, Indianapolis, IN, 1999.
+
+\bibitem{gray2017empathy}
+Dave Gray.
+\newblock Empathy map canvas, 2017.
+\newblock Updated empathy map framework, originally developed at XPLANE.
+
+\bibitem{kalbach2016mapping}
+James Kalbach.
+\newblock {\em Mapping Experiences: A Complete Guide to Creating Value through Journeys, Blueprints, and Diagrams}.
+\newblock O'Reilly Media, Sebastopol, CA, 2016.
+
+\bibitem{birch1993practical}
+Jennifer Birch.
+\newblock {\em Practical Guide for Color Vision Examination}.
+\newblock Butterworth-Heinemann, Oxford, UK, 1993.
+
+\bibitem{google2014roboto}
+{Google}.
+\newblock Roboto font family, 2014.
+\newblock Google Fonts.
+
+\end{thebibliography}
