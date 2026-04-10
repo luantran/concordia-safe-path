@@ -21,7 +21,12 @@ const Notifications = () => {
 
     const handlePress = async (notification) => {
         if (!notification.read) await markAsRead(notification.id)
-        router.push(`/incidents/${notification.incident_id}`)
+        router.push({
+            pathname: `/incidents/${notification.incident_id}`,
+            params: {
+                fromTab: 'notifications',
+            }
+        })
     }
 
     const renderItem = ({ item }) => {

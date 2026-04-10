@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react"
-import { StyleSheet, View, TouchableOpacity, Keyboard, Text } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Keyboard, Text, Image, Platform } from 'react-native'
 import MapView, { Marker, Circle, Polygon } from "react-native-maps"
 import * as Location from "expo-location"
 
@@ -27,9 +27,21 @@ import { useRouter } from 'expo-router'
 import {Ionicons} from "@expo/vector-icons";
 
 const BUILDING_MARKER = require('../../assets/building_marker.png')
+const BUILDING_MARKER_SIZE = Platform.select({ android: 15, ios: 16, default: 16 })
+
+const DARK_MAP_STYLE = [
+  { elementType: 'geometry', stylers: [{ color: '#1d2c4d' }] },
+  { elementType: 'labels.text.fill', stylers: [{ color: '#8ec3b9' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#1a3646' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#304a7d' }] },
+  { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#98a5be' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0e1626' }] },
+  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#4e6d70' }] },
+]
 
 const Map = () => {
   const { colorScheme } = useTheme();
+  const theme = Colors[colorScheme] ?? Colors.light
   const { isOnline, checkOnline } = useNetwork()
   const [location, setLocation] = useState(null)
   const [error, setError] = useState(null)
@@ -264,9 +276,11 @@ const Map = () => {
 
         {/* MAP */}
         <MapView
+            key={colorScheme}
             ref={mapRef}
             style={[styles.map]}
             userInterfaceStyle={colorScheme === 'dark' ? 'dark' : 'light'}
+            customMapStyle={colorScheme === 'dark' ? DARK_MAP_STYLE : []}
             initialRegion={{
               latitude: GUY_METRO.latitude,
               longitude: GUY_METRO.longitude,
@@ -306,6 +320,7 @@ const Map = () => {
                   coordinate={{ latitude: building.latitude, longitude: building.longitude }}
                   title={building.name}
                   image={BUILDING_MARKER}
+                  tracksViewChanges={false}
               />
           ))}
 
@@ -320,7 +335,7 @@ const Map = () => {
                         setSelectedIncidentId(incident.id)
                       }}
                       coordinate={{ latitude: incident.latitude, longitude: incident.longitude }}
-                      tracksViewChanges={true}
+                      tracksViewChanges={false}
                   >
                     <View style={{ alignItems: 'center' }}>
 
@@ -411,34 +426,47 @@ const Map = () => {
             <TouchableOpacity
                 style={[
                   styles.incidentCallout,
-                  { borderLeftWidth: 2, borderLeftColor: Colors.severity[selectedIncident.severity],
-                  borderWidth: 2, borderColor: Colors.severity[selectedIncident.severity]}
+                  {
+                    backgroundColor: theme.uiBackground,
+                    borderLeftWidth: 2,
+                    borderLeftColor: Colors.severity[selectedIncident.severity],
+                    borderWidth: 2,
+                    borderColor: Colors.severity[selectedIncident.severity],
+                  }
                 ]}
                 onPress={() => {
                   setSelectedIncident(null)
                   setSelectedIncidentId(null)
                   setAlertIncidentId(null)
-                  router.push(`/incidents/${selectedIncident.id}`)
+                  router.push({
+                    pathname: '/incidents/[id]',
+                    params: {
+                      id: selectedIncident.id,
+                      fromTab: 'map',
+                      alertIncidentId: selectedIncident.id,
+                      alertTrigger: Date.now()
+                    }
+                  })
                 }}
                 activeOpacity={0.9}
             >
               <View style={styles.calloutTop}>
                 <View style={[styles.calloutSeverityDot, { backgroundColor: Colors.severity[selectedIncident.severity] }]} />
-                <Text style={styles.calloutTitle}>
+                <Text style={[styles.calloutTitle, { color: theme.title }]}>
                   {selectedIncident.type.charAt(0).toUpperCase() + selectedIncident.type.slice(1)}
                 </Text>
                 {selectedIncident.verified && (
-                    <View style={styles.calloutVerifiedBadge}>
-                      <Text style={styles.calloutVerifiedText}>✓ Verified</Text>
+                    <View style={[styles.calloutVerifiedBadge, { backgroundColor: Colors.badge.verifiedBg }]}>
+                      <Text style={[styles.calloutVerifiedText, { color: Colors.badge.verified }]}>✓ Verified</Text>
                     </View>
                 )}
                 <Ionicons name="chevron-forward" size={18} color={Colors.primary} />
               </View>
-              <Text style={styles.calloutSeverity}>
+              <Text style={[styles.calloutSeverity, { color: theme.text }]}>
                 {selectedIncident.severity.charAt(0).toUpperCase() + selectedIncident.severity.slice(1)} Tension
                 {selectedIncident.upvotes >= 4 ? ` · ${selectedIncident.upvotes} reports` : ''}
               </Text>
-              <Text style={styles.calloutHint}>Tap to view details</Text>
+              <Text style={[styles.calloutHint, { color: Colors.primary }]}>Tap to view details</Text>
             </TouchableOpacity>
         )}
         {(isUserInDangerZone || navigatingToSafety) && (
@@ -722,6 +750,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.primary,
     fontWeight: '500',
+  },
+  buildingMarkerImage: {
+    width: BUILDING_MARKER_SIZE,
+    height: BUILDING_MARKER_SIZE,
   },
   safeZoneCompact: {
     position: 'absolute',

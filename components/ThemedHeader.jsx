@@ -26,6 +26,7 @@ import ThemedText from "./ThemedText";
 import { useNotificationsContext } from "../contexts/NotificationsContext"
 import {useUser} from "../hooks/useUser";
 import {useTheme} from "../contexts/ThemeContext";
+import {getBackOverride} from "../lib/navigationStore";
 
 // Maps route pathnames to display titles shown in the header center.
 // Dynamic routes are handled separately below.
@@ -74,7 +75,14 @@ const ThemedHeader = () => {
             {/* Left: hamburger menu → opens ThemedDrawer */}
             {pathname.startsWith('/menu/') || pathname.startsWith('/incidents/') ? (
                 !isOnboarding && (
-                    <TouchableOpacity onPress={() => router.back()}>
+                    <TouchableOpacity onPress={() => {
+                        const override = getBackOverride()
+                        if (override) {
+                            override()
+                        } else {
+                            router.back()
+                        }
+                    }}>
                         <Ionicons name="arrow-back" size={26} color="#fff" />
                     </TouchableOpacity>
                 )

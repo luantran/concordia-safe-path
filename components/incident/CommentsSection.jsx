@@ -7,62 +7,35 @@ import { useTheme } from '../../contexts/ThemeContext'
 
 
 // purely presentational — realtime subscription and fetch logic live in useIncidentDetail
-const CommentsSection = ({ comments, commentText, commentLoading, onChangeText, onSubmit }) => {
-    const { height } = useWindowDimensions()
+const CommentsSection = ({ comments }) => {
     const { colorScheme } = useTheme()
     const isDark = colorScheme === 'dark'
 
     return (
-        <View style={styles.container}>
-            <ThemedText title>Comments</ThemedText>
-            <Spacer height={10} />
-
-            {/* scrollable comment list, capped at 30% of screen height */}
-            <ScrollView
-                keyboardShouldPersistTaps="handled"
-                style={[styles.commentsContainer, { maxHeight: height * 0.3 }]}
-            >
-                {comments.length === 0 && (
-                    <ThemedText style={styles.noComments}>No comments yet.</ThemedText>
-                )}
-                {comments.map((c) => (
-                    <View key={c.id} style={[styles.commentItem, isDark && { borderBottomColor: '#3a3650' }]}>
-                        <View style={styles.commentRow}>
-                            <Ionicons name="person-circle" size={36} color={isDark ? '#9591a5' : '#6B7280'} style={styles.profileIcon} />
-                            <View style={[styles.commentContentWrapper, isDark && { backgroundColor: '#2f2b3d' }]}>
-                                {/* username joined from profiles via FK — falls back to 'Unknown' */}
-                                <ThemedText style={styles.commentUser}>
-                                    {c.profiles?.username ?? 'Unknown'}
-                                </ThemedText>
-                                <Spacer height={4} />
-                                <ThemedText style={styles.commentContent}>{c.content}</ThemedText>
-                                <ThemedText style={styles.commentTime}>{timeAgo(c.created_at)}</ThemedText>
-                            </View>
+        <ScrollView
+            keyboardShouldPersistTaps="handled"
+            style={styles.commentsContainer}
+            contentContainerStyle={{ paddingBottom: 10 }}
+        >
+            {comments.length === 0 && (
+                <ThemedText style={styles.noComments}>No comments yet.</ThemedText>
+            )}
+            {comments.map((c) => (
+                <View key={c.id} style={[styles.commentItem, isDark && { borderBottomColor: '#3a3650' }]}>
+                    <View style={styles.commentRow}>
+                        <Ionicons name="person-circle" size={36} color={isDark ? '#9591a5' : '#6B7280'} style={styles.profileIcon} />
+                        <View style={[styles.commentContentWrapper, isDark && { backgroundColor: '#2f2b3d' }]}>
+                            <ThemedText style={styles.commentUser}>
+                                {c.profiles?.username ?? 'Unknown'}
+                            </ThemedText>
+                            <Spacer height={4} />
+                            <ThemedText style={styles.commentContent}>{c.content}</ThemedText>
+                            <ThemedText style={styles.commentTime}>{timeAgo(c.created_at)}</ThemedText>
                         </View>
                     </View>
-                ))}
-            </ScrollView>
-
-            {/* add comment — send on button press or keyboard return */}
-            <View style={[styles.addCommentContainer, isDark && { backgroundColor: '#252231', borderTopColor: '#3a3650' }]}>
-                <TextInput
-                    style={[styles.commentInput, isDark && { backgroundColor: '#2f2b3d', borderColor: '#3a3650', color: '#d4d4d4' }]}
-                    placeholder="Add a comment..."
-                    placeholderTextColor={isDark ? '#9591a5' : '#999'}
-                    value={commentText}
-                    onChangeText={onChangeText}
-                    returnKeyType="send"
-                    onSubmitEditing={onSubmit}
-                />
-                <TouchableOpacity
-                    style={[styles.commentButton, (!commentText.trim() || commentLoading) && styles.commentButtonDisabled]}
-                    onPress={onSubmit}
-                    disabled={!commentText.trim() || commentLoading}
-                >
-                    <Ionicons name="send" size={20} color="#fff" />
-                </TouchableOpacity>
-            </View>
-        </View>
+                </View>
+            ))}
+        </ScrollView>
     )
 }
 

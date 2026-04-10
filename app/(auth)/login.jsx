@@ -19,6 +19,7 @@ import {
     View
 } from 'react-native'
 import {useEffect, useState} from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { router} from "expo-router";
 import { Colors } from "../../constants/Colors";
@@ -32,6 +33,8 @@ import ThemedButton from "../../components/ThemedButton";
 import ThemedTextInput from "../../components/ThemedTextInput";
 import RolePickerModal from "../../components/auth/RolePickerModal";
 import AuthHeader from "../../components/auth/AuthHeader";
+import LogoCard from "../../components/auth/LogoCard";
+import PasswordResetModal from "../../components/auth/PasswordResetModal";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -39,6 +42,9 @@ const Login = () => {
     const [error, setError] = useState(null);
     const [roleModalVisible, setRoleModalVisible] = useState(false)
     const [keyboardOpen, setKeyboardOpen] = useState(false)
+    const [resetModalVisible, setResetModalVisible] = useState(false)
+
+    const insets = useSafeAreaInsets()
 
     // animate layout when keyboard opens/closes so nothing gets covered
     useEffect(() => {
@@ -82,66 +88,82 @@ const Login = () => {
             <View style={styles.root}>
                 {/* hide header when keyboard is open to save space */}
                 {!keyboardOpen && <AuthHeader />}
-                <ThemedView style={styles.container} safe={true}>
-                    <Spacer />
 
-                    <ThemedText title={true} style={styles.title}>
-                        Login to Your Account
-                    </ThemedText>
+                {/* Logo card positioned absolutely on top of everything */}
+                {!keyboardOpen && (
+                    <View style={[styles.logoOverlay, { top: insets.top + 60 }]}>
+                        <LogoCard />
+                    </View>
+                )}
 
-                    <ThemedTextInput
-                        style={{ width: '80%', marginBottom: 20 }}
-                        placeholder="Email"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        onChangeText={setEmail}
-                        value={email}
-                        icon="person-outline"
+                <View style={[styles.panelHost, keyboardOpen && styles.panelHostKeyboard]}>
+                    <ThemedView style={[styles.panelClip, styles.container]} safe={false}>
+                            <Spacer />
+
+                            <ThemedText title={true} style={styles.title}>
+                                Login to Your Account
+                            </ThemedText>
+
+                            <ThemedTextInput
+                                style={{ width: '80%', marginBottom: 20 }}
+                                placeholder="Email"
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                onChangeText={setEmail}
+                                value={email}
+                                icon="person-outline"
+                            />
+
+                            <ThemedTextInput
+                                style={{ width: '80%', marginBottom: 20 }}
+                                placeholder="Password"
+                                autoCapitalize="none"
+                                onChangeText={setPassword}
+                                value={password}
+                                secureTextEntry
+                                icon="lock-closed-outline"
+                            />
+
+                            <TouchableOpacity
+                                style={{ alignSelf: 'flex-end', marginRight: '35%', marginBottom: 16 }}
+                                onPress={() => setResetModalVisible(true)}
+                            >
+                                <ThemedText style={{ color: Colors.primary, fontSize: 13 }}>Forgot Password?</ThemedText>
+                            </TouchableOpacity>
+
+                            <Spacer />
+
+                            {/* only rendered when theres an active error */}
+                            {error && <Text style={styles.error}>{error}</Text>}
+
+                            <ThemedButton style={styles.button} onPress={handleSubmit}>
+                                <Text style={{ color: '#f2f2f2' }}>Login</Text>
+                            </ThemedButton>
+
+                            <Spacer />
+
+                            {/* opens role picker modal before navigating to register */}
+                            <TouchableOpacity onPress={() => setRoleModalVisible(true)}>
+                                <ThemedText style={{ textAlign: 'center' }}>
+                                    Don't have a ConSafe Path account?{' '}
+                                    <ThemedText style={{ color: Colors.primary }}>Sign up</ThemedText>
+                                </ThemedText>
+                                <ThemedText style={{ textAlign: 'center', fontSize: 12, opacity: 0.5, marginTop: 8 }}>
+                                    This app uses its own account system,{"\n"}separate from your university credentials.
+                                </ThemedText>
+                            </TouchableOpacity>
+
+                            <RolePickerModal
+                                visible={roleModalVisible}
+                                onSelect={handleRoleSelect}
+                                onClose={() => setRoleModalVisible(false)}
+                            />
+                    </ThemedView>
+                    <PasswordResetModal
+                        visible={resetModalVisible}
+                        onClose={() => setResetModalVisible(false)}
                     />
-
-                    <ThemedTextInput
-                        style={{ width: '80%', marginBottom: 20 }}
-                        placeholder="Password"
-                        autoCapitalize="none"
-                        onChangeText={setPassword}
-                        value={password}
-                        secureTextEntry
-                        icon="lock-closed-outline"
-                    />
-
-                    <TouchableOpacity style={{ alignSelf: 'flex-end', marginRight: '35%', marginBottom: 16 }}>
-                        <ThemedText style={{ color: Colors.primary, fontSize: 13}}>Forgot Password?</ThemedText>    
-                    </TouchableOpacity>
-
-                    <Spacer />
-
-                    {/* only rendered when theres an active error */}
-                    {error && <Text style={styles.error}>{error}</Text>}
-
-                    <ThemedButton style={styles.button} onPress={handleSubmit}>
-                        <Text style={{ color: '#f2f2f2' }}>Login</Text>
-                    </ThemedButton>
-
-                    <Spacer/>
-
-                    {/* opens role picker modal before navigating to register */}
-                    <TouchableOpacity onPress={() => setRoleModalVisible(true)}>
-                        <ThemedText style={{ textAlign: 'center' }}>
-                            Don't have a ConSafe Path account?{' '}
-                            <ThemedText style={{ color: Colors.primary }}>Sign up</ThemedText>
-                        </ThemedText>
-                        <ThemedText style={{ textAlign: 'center', fontSize: 12, opacity: 0.5, marginTop: 8 }}>
-                            This app uses its own account system,{'\n'}separate from your university credentials.
-                        </ThemedText>
-
-                    </TouchableOpacity>
-
-                    <RolePickerModal
-                        visible={roleModalVisible}
-                        onSelect={handleRoleSelect}
-                        onClose={() => setRoleModalVisible(false)}
-                    />
-                </ThemedView>
+                </View>
             </View>
         </TouchableWithoutFeedback>
     )
@@ -150,13 +172,32 @@ const Login = () => {
 export default Login
 
 const styles = StyleSheet.create({
+    logoOverlay: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        zIndex: 100,
+        pointerEvents: 'box-none',
+    },
+    panelHost: {
+        flex: 1,
+        marginTop: -20, // keep header overlap but avoid clipping the corner arcs
+        zIndex: 10,
+        overflow: 'visible',
+    },
+    panelHostKeyboard: {
+        marginTop: 0,
+    },
+    panelClip: {
+        borderTopLeftRadius: 44,
+        borderTopRightRadius: 44,
+        overflow: 'hidden',
+    },
     container: {
         flex: 1,
         justifyContent: "center",
         alignItems: 'center',
-        borderTopLeftRadius: 50,
-        borderTopRightRadius: 50,
-        marginTop: -30, // overlaps slightly over the header
     },
     title: {
         textAlign: "center",
@@ -182,5 +223,6 @@ const styles = StyleSheet.create({
     root: {
         flex: 1,
         backgroundColor: Colors.primaryDark,
+        overflow: 'visible',
     },
 })

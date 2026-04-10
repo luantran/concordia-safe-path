@@ -1,38 +1,56 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { useTheme } from "../contexts/ThemeContext";
+import { Colors } from "../constants/Colors";
 
 const RouteResultsSheet = ({ routes, selectedRouteId, onSelectRoute, onDismiss }) => {
+  const { colorScheme } = useTheme()
+  const theme = Colors[colorScheme] ?? Colors.light
+  const isDark = colorScheme === 'dark'
+
   if (!routes || routes.length === 0) return null;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <Text style={styles.header}>Available Safe Paths</Text>
-        <TouchableOpacity onPress={onDismiss}>
-          <Text style={styles.dismiss}>✕</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView>
-        {routes.map((route, index) => {
-          const isSelected = route.id === selectedRouteId;
+      <View style={[styles.container, { backgroundColor: theme.uiBackground }]}>
+        <View style={styles.headerRow}>
+          <Text style={[styles.header, { color: theme.title }]}>Available Safe Paths</Text>
+          <TouchableOpacity onPress={onDismiss}>
+            <Text style={[styles.dismiss, { color: theme.text }]}>✕</Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView>
+          {routes.map((route, index) => {
+            const isSelected = route.id === selectedRouteId;
 
-          return (
-            <TouchableOpacity
-              key={route.id}
-              style={[styles.routeItem, isSelected && styles.selectedRoute]}
-              onPress={() => onSelectRoute(route.id)}
-            >
-              <Text style={styles.routeTitle}>
-                Path {index + 1}
-              </Text>
-              <Text style={styles.routeDetails}>
-                {route.duration} • {route.distance}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
-    </View>
+            return (
+                <TouchableOpacity
+                    key={route.id}
+                    style={[
+                      styles.routeItem,
+                      {
+                        backgroundColor: isDark ? '#2f2b3d' : '#f5f5f5',
+                        borderWidth: 1,
+                        borderColor: isDark ? '#4a4560' : 'transparent',
+                      },
+                      isSelected && {
+                        backgroundColor: isDark ? '#1a3a2a' : '#d6f5e3',
+                        borderWidth: 1,
+                        borderColor: '#2ecc71',
+                      },
+                    ]}
+                    onPress={() => onSelectRoute(route.id)}
+                >
+                  <Text style={[styles.routeTitle, { color: theme.title }]}>
+                    Path {index + 1}
+                  </Text>
+                  <Text style={[styles.routeDetails, { color: theme.text }]}>
+                    {route.duration} • {route.distance}
+                  </Text>
+                </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
   );
 };
 
@@ -44,7 +62,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 16,
@@ -63,7 +80,6 @@ const styles = StyleSheet.create({
   },
   dismiss: {
     fontSize: 16,
-    color: "#555",
     padding: 4,
   },
   header: {
@@ -73,7 +89,6 @@ const styles = StyleSheet.create({
   routeItem: {
     padding: 12,
     borderRadius: 10,
-    backgroundColor: "#f5f5f5",
     marginBottom: 10,
   },
   selectedRoute: {
@@ -86,6 +101,5 @@ const styles = StyleSheet.create({
   },
   routeDetails: {
     marginTop: 4,
-    color: "#555",
   },
 });

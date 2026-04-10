@@ -1,11 +1,12 @@
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Colors } from '../../constants/Colors';
 import {SEVERITY_RADIUS, WARNING_RADIUS} from "../../constants/Incidents";
-
 import {useRouter} from "expo-router";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ProximityAlertModal({ visible, incident, stage, onClose }) {
     const router = useRouter()
+    const insets = useSafeAreaInsets()
 
     // guard: incident/stage may be undefined during slide-out animation or before data loads
     if (!visible || !incident || !stage) return null;
@@ -26,7 +27,7 @@ export default function ProximityAlertModal({ visible, incident, stage, onClose 
         <Modal visible={visible} transparent animationType="slide">
             <View style={styles.overlay}>
                 {/* left border color changes with stage — visual severity cue */}
-                <View style={[styles.card, { borderColor: config.backgroundColor }]}>
+                <View style={[styles.card, { borderColor: config.backgroundColor, marginBottom: insets.bottom + 16 }]}>
                     <Text style={[styles.title, { color: config.backgroundColor }]}>
                         {config.title}
                     </Text>
@@ -71,7 +72,6 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         borderLeftWidth: 6,
         margin: 16,
-        marginBottom: 32,
         padding: 20,
         gap: 8,
     },

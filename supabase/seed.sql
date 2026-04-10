@@ -59,8 +59,7 @@ INSERT INTO profiles (id, role, username, location_consent, preferences_complete
 INSERT INTO incidents (id, user_id, type, description, severity, latitude, longitude, upvotes, status, verification_status, created_at, verified) VALUES
 ('660e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440002', 'construction', 'Construction near Hall Building.', 'low', 45.4970, -73.5794, 10, 'resolved', 'verified_by_campus', NOW() - INTERVAL '7 days', TRUE),
 ('660e8400-e29b-41d4-a716-446655440001', '550e8400-e29b-41d4-a716-446655440000', 'protest', 'Protest near Museum of Fine Arts.', 'medium', 45.4985, -73.5800, 15, 'resolved', 'verified_by_campus', NOW() - INTERVAL '5 days', TRUE),
-('660e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440003', 'vandalism', 'Vandalism near campus.', 'medium', 45.496127, -73.580029, 7, 'active', 'verified_by_users', NOW() - INTERVAL '1 day', FALSE);
-
+('660e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440003', 'vandalism', 'Vandalism near campus.', 'medium', 45.4962, -73.5790, 7, 'active', 'verified_by_users', NOW() - INTERVAL '1 day', FALSE);
 
 -- Insert comments on incidents (by staff and other students, not Chloe)
 INSERT INTO comments (id, incident_id, user_id, content, created_at) VALUES
