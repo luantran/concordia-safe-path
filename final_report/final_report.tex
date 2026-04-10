@@ -337,51 +337,7 @@ These scenarios were chosen because they represent the most common and highest-i
 \subsection{User Flow Diagrams}
 \label{sec:prototyping}
  
-Before designing any screens, the focus was on mapping out exactly how each user would move through the app step by step. These diagrams show every decision point and every action the user or the system takes along the way. Each flow is tied to one of the personas so that the logic reflects what Sarah, Chloe, and James actually need to do, rather than what was assumed.
- 
-To illustrate how users move through the system, four user flows were developed, each targeting a distinct interaction context.
- 
-\subsubsection{Login / Sign Up}
-The first covers account creation and login, following the steps a new user takes to register, select their role, and configure their accessibility and notification preferences. This flow is particularly relevant to Sarah and Chloe, whose safety and comfort depend heavily on the system being correctly configured to their needs from the outset.
- 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\columnwidth, keepaspectratio]{user_flows/Login_Signup_low.png}
-  \caption{Login / Sign Up user flow.}
-  \label{fig:flow_login}
-\end{figure}
- 
-\subsubsection{Main Navigation}
-The second covers main navigation, showing how a user moves between the core sections of the interface during a typical campus disruption. This is Chloe's primary mode of use: passively monitoring the incident map and checking report status.
- 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\columnwidth, keepaspectratio]{user_flows/CoreUI_low.png}
-  \caption{UI navigation user flow.}
-  \label{fig:flow_navigation}
-\end{figure}
- 
-\subsubsection{Menu}
-The third covers accessing the menu, following how users reach emergency contacts, accessibility settings, and notification preferences.
- 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\columnwidth, keepaspectratio]{user_flows/Menu_low.png}
-  \caption{Menu user flow.}
-  \label{fig:flow_menu}
-\end{figure}
- 
-\subsubsection{Route Planning}
-The fourth covers route planning, following the steps a user takes to enter a destination, review safe and accessible route options filtered by their accessibility needs, and begin navigation. This is Sarah's most critical flow, as it directly addresses her need to verify that a route is wheelchair-accessible before leaving her starting point.
- 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\columnwidth, keepaspectratio]{user_flows/RoutePlanning_low.png}
-  \caption{Route planning user flow.}
-  \label{fig:flow_route}
-\end{figure}
- 
-Together these four flows span the full range of typical interactions and map directly onto the goal categories defined in Section~\ref{sec:goals}: setup and personalization, situational awareness, navigation, and emergency and resource access.
+Four user flow diagrams were developed to map how each persona moves through the application step by step. The Login / Sign Up flow (Figure~\ref{fig:flow_login}) covers account creation, role selection, and preference configuration. The Main Navigation flow (Figure~\ref{fig:flow_navigation}) shows how users move between core sections during a disruption. The Menu flow (Figure~\ref{fig:flow_menu}) covers access to emergency contacts, accessibility settings, and notification preferences. The Route Planning flow (Figure~\ref{fig:flow_route}) follows the steps a user takes to select a destination, review safe route options, and begin navigation. The full user flow diagrams are presented in Appendix~\ref{appendix:userflows}.
  
 \subsection{Low-Fidelity Wireframes}
  
@@ -801,7 +757,49 @@ Notifications  & P & Y & N & Y & P & Y & P & Y & Y & N \\
 \hline
 \end{tabular}
 \end{minipage}}
+
+\newpage
  
+\section*{Appendix E: User Flow Diagrams}
+\label{appendix:userflows}
+ 
+\noindent\makebox[\textwidth][c]{%
+\begin{minipage}{\textwidth}
+  \centering
+  \includegraphics[width=\textwidth, keepaspectratio]{user_flows/Login_Signup_low.png}
+  \captionof{figure}{Login / Sign Up user flow.}
+  \label{fig:flow_login}
+\end{minipage}}
+ 
+\vspace{0.5cm}
+ 
+\noindent\makebox[\textwidth][c]{%
+\begin{minipage}{\textwidth}
+  \centering
+  \includegraphics[width=\textwidth, keepaspectratio]{user_flows/CoreUI_low.png}
+  \captionof{figure}{UI navigation user flow.}
+  \label{fig:flow_navigation}
+\end{minipage}}
+ 
+\newpage
+ 
+\noindent\makebox[\textwidth][c]{%
+\begin{minipage}{\textwidth}
+  \centering
+  \includegraphics[width=\textwidth, keepaspectratio]{user_flows/Menu_low.png}
+  \captionof{figure}{Menu user flow.}
+  \label{fig:flow_menu}
+\end{minipage}}
+ 
+\vspace{0.5cm}
+ 
+\noindent\makebox[\textwidth][c]{%
+\begin{minipage}{\textwidth}
+  \centering
+  \includegraphics[width=\textwidth, keepaspectratio]{user_flows/RoutePlanning_low.png}
+  \captionof{figure}{Route planning user flow.}
+  \label{fig:flow_route}
+\end{minipage}}
 
 \end{document}
 \endinput

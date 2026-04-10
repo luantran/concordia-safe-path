@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.23)  9 APR 2026 21:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.23)  9 APR 2026 21:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1139,305 +1139,323 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 [4.4 <./personas/SarahPeters_Persona2.png> <./personas/JamesDavid_Persona3.png> <./empathy_maps/chloe martin - empathy maps.png (PNG copy)> <./empathy_maps/sarah peters - empathy maps.png (PNG copy)> <./empathy_maps/james david - empathy maps.png (PNG copy)>]
-<user_flows/Login_Signup_low.png, id=265, 895.345pt x 645.41125pt>
-File: user_flows/Login_Signup_low.png Graphic file (type png)
-<use user_flows/Login_Signup_low.png>
-Package pdftex.def Info: user_flows/Login_Signup_low.png  used on input line 349.
-(pdftex.def)             Requested size: 241.14749pt x 173.83005pt.
 
-
-Class acmart Warning: A possible image without description on input line 352.
-
-<user_flows/CoreUI_low.png, id=266, 1486.55376pt x 954.56625pt>
-File: user_flows/CoreUI_low.png Graphic file (type png)
-<use user_flows/CoreUI_low.png>
-Package pdftex.def Info: user_flows/CoreUI_low.png  used on input line 359.
-(pdftex.def)             Requested size: 241.14749pt x 154.84572pt.
-
-Class acmart Warning: A possible image without description on input line 362.
-
-<user_flows/Menu_low.png, id=267, 1052.93375pt x 885.3075pt>
-File: user_flows/Menu_low.png Graphic file (type png)
-<use user_flows/Menu_low.png>
-Package pdftex.def Info: user_flows/Menu_low.png  used on input line 369.
-(pdftex.def)             Requested size: 241.14749pt x 202.75188pt.
-
-Class acmart Warning: A possible image without description on input line 372.
-
-
-
-<user_flows/RoutePlanning_low.png, id=268, 854.19125pt x 695.59875pt>
-File: user_flows/RoutePlanning_low.png Graphic file (type png)
-<use user_flows/RoutePlanning_low.png>
-Package pdftex.def Info: user_flows/RoutePlanning_low.png  used on input line 379.
-(pdftex.def)             Requested size: 241.14749pt x 196.36903pt.
-
-Class acmart Warning: A possible image without description on input line 382.
-
-
-
-[5.5 <./user_flows/Login_Signup_low.png> <./user_flows/CoreUI_low.png> <./user_flows/Menu_low.png> <./user_flows/RoutePlanning_low.png>]
-
-LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 424.
+LaTeX Font Info:    Trying to load font information for T1+zi4 on input line 380.
 (c:/texlive/2024/texmf-dist/tex/latex/inconsolata/t1zi4.fd
 File: t1zi4.fd 2018/01/14 T1/zi4 (Inconsolata)
 )
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 9.0pt on input line 424.
+(Font)              scaled to size 9.0pt on input line 380.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `zi4' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-Overfull \hbox (1.8016pt too wide) in paragraph at lines 426--427
+Overfull \hbox (1.8016pt too wide) in paragraph at lines 382--383
 \T1/LinuxLibertineT-TLF/m/n/9 (-20) through-out. The code-base is hosted on GitHub at []$https : / / github\OML/nxlmi/m/it/9 :\T1/LinuxLibertineT-TLF/m/n/9 (-20) com /
  []
 
-<screenshots/authentication.png, id=301, 734.745pt x 287.8755pt>
+<screenshots/authentication.png, id=285, 734.745pt x 287.8755pt>
 File: screenshots/authentication.png Graphic file (type png)
 <use screenshots/authentication.png>
-Package pdftex.def Info: screenshots/authentication.png  used on input line 432.
+Package pdftex.def Info: screenshots/authentication.png  used on input line 388.
 (pdftex.def)             Requested size: 241.14749pt x 94.48087pt.
+
+Class acmart Warning: A possible image without description on input line 391.
+
+
+
+[5.5{c:/texlive/2024/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-4.enc}]
+<screenshots/preferences.png, id=310, 560.0925pt x 314.97675pt>
+File: screenshots/preferences.png Graphic file (type png)
+<use screenshots/preferences.png>
+Package pdftex.def Info: screenshots/preferences.png  used on input line 399.
+(pdftex.def)             Requested size: 241.14749pt x 135.61517pt.
+
+
+Class acmart Warning: A possible image without description on input line 402.
+
+<screenshots/map_and_routes.png, id=312, 644.4075pt x 281.853pt>
+File: screenshots/map_and_routes.png Graphic file (type png)
+<use screenshots/map_and_routes.png>
+Package pdftex.def Info: screenshots/map_and_routes.png  used on input line 410.
+(pdftex.def)             Requested size: 241.14749pt x 105.47527pt.
+
+Class acmart Warning: A possible image without description on input line 413.
+
+
+
+<screenshots/proximity.png, id=314, 638.98724pt x 289.68225pt>
+File: screenshots/proximity.png Graphic file (type png)
+<use screenshots/proximity.png>
+Package pdftex.def Info: screenshots/proximity.png  used on input line 421.
+(pdftex.def)             Requested size: 241.14749pt x 109.32011pt.
+
+Class acmart Warning: A possible image without description on input line 424.
+
+<screenshots/reporting.png, id=316, 437.2335pt x 325.215pt>
+File: screenshots/reporting.png Graphic file (type png)
+<use screenshots/reporting.png>
+Package pdftex.def Info: screenshots/reporting.png  used on input line 432.
+(pdftex.def)             Requested size: 241.14749pt x 179.37pt.
 
 Class acmart Warning: A possible image without description on input line 435.
 
 
 
-[6.6{c:/texlive/2024/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-4.enc}]
-<screenshots/preferences.png, id=322, 560.0925pt x 314.97675pt>
-File: screenshots/preferences.png Graphic file (type png)
-<use screenshots/preferences.png>
-Package pdftex.def Info: screenshots/preferences.png  used on input line 443.
-(pdftex.def)             Requested size: 241.14749pt x 135.61517pt.
+[6.6 <./screenshots/authentication.png> <./screenshots/preferences.png> <./screenshots/map_and_routes.png> <./screenshots/proximity.png>]
+<screenshots/incident-detail-list.png, id=332, 530.58224pt x 301.72725pt>
+File: screenshots/incident-detail-list.png Graphic file (type png)
+<use screenshots/incident-detail-list.png>
+Package pdftex.def Info: screenshots/incident-detail-list.png  used on input line 443.
+(pdftex.def)             Requested size: 241.14749pt x 137.13417pt.
 
 
 Class acmart Warning: A possible image without description on input line 446.
 
-<screenshots/map_and_routes.png, id=324, 644.4075pt x 281.853pt>
-File: screenshots/map_and_routes.png Graphic file (type png)
-<use screenshots/map_and_routes.png>
-Package pdftex.def Info: screenshots/map_and_routes.png  used on input line 454.
-(pdftex.def)             Requested size: 241.14749pt x 105.47527pt.
+
+
+<screenshots/notifications_and_offline.png, id=334, 510.10574pt x 284.262pt>
+File: screenshots/notifications_and_offline.png Graphic file (type png)
+<use screenshots/notifications_and_offline.png>
+Package pdftex.def Info: screenshots/notifications_and_offline.png  used on input line 454.
+(pdftex.def)             Requested size: 241.14749pt x 134.3839pt.
 
 Class acmart Warning: A possible image without description on input line 457.
 
-
-
-<screenshots/proximity.png, id=326, 638.98724pt x 289.68225pt>
-File: screenshots/proximity.png Graphic file (type png)
-<use screenshots/proximity.png>
-Package pdftex.def Info: screenshots/proximity.png  used on input line 465.
-(pdftex.def)             Requested size: 241.14749pt x 109.32011pt.
+<screenshots/menu.png, id=336, 726.91576pt x 323.40825pt>
+File: screenshots/menu.png Graphic file (type png)
+<use screenshots/menu.png>
+Package pdftex.def Info: screenshots/menu.png  used on input line 465.
+(pdftex.def)             Requested size: 241.14749pt x 107.28761pt.
 
 Class acmart Warning: A possible image without description on input line 468.
 
-<screenshots/reporting.png, id=328, 437.2335pt x 325.215pt>
-File: screenshots/reporting.png Graphic file (type png)
-<use screenshots/reporting.png>
-Package pdftex.def Info: screenshots/reporting.png  used on input line 476.
-(pdftex.def)             Requested size: 241.14749pt x 179.37pt.
 
-Class acmart Warning: A possible image without description on input line 479.
+
+[7.7 <./screenshots/reporting.png> <./screenshots/incident-detail-list.png> <./screenshots/notifications_and_offline.png> <./screenshots/menu.png>]
 
 
 
-[7.7 <./screenshots/authentication.png> <./screenshots/preferences.png> <./screenshots/map_and_routes.png> <./screenshots/proximity.png>]
-<screenshots/incident-detail-list.png, id=345, 530.58224pt x 301.72725pt>
-File: screenshots/incident-detail-list.png Graphic file (type png)
-<use screenshots/incident-detail-list.png>
-Package pdftex.def Info: screenshots/incident-detail-list.png  used on input line 487.
-(pdftex.def)             Requested size: 241.14749pt x 137.13417pt.
-
-
-Class acmart Warning: A possible image without description on input line 490.
-
-
-
-<screenshots/notifications_and_offline.png, id=347, 510.10574pt x 284.262pt>
-File: screenshots/notifications_and_offline.png Graphic file (type png)
-<use screenshots/notifications_and_offline.png>
-Package pdftex.def Info: screenshots/notifications_and_offline.png  used on input line 498.
-(pdftex.def)             Requested size: 241.14749pt x 134.3839pt.
-
-Class acmart Warning: A possible image without description on input line 501.
-
-<screenshots/menu.png, id=349, 726.91576pt x 323.40825pt>
-File: screenshots/menu.png Graphic file (type png)
-<use screenshots/menu.png>
-Package pdftex.def Info: screenshots/menu.png  used on input line 509.
-(pdftex.def)             Requested size: 241.14749pt x 107.28761pt.
-
-Class acmart Warning: A possible image without description on input line 512.
-
-
-
-[8.8 <./screenshots/reporting.png> <./screenshots/incident-detail-list.png> <./screenshots/notifications_and_offline.png> <./screenshots/menu.png>]
-
-
-
-[9.9] (./final_report.bbl
+[8.8] (./final_report.bbl
 
 )
 
-[10.10]
+[9.9]
 
-Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 629.
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 585.
 
-<journey_maps/ChloeMartin_JourneyMap_low.png, id=383, 1190.4475pt x 813.0375pt>
+<journey_maps/ChloeMartin_JourneyMap_low.png, id=371, 1190.4475pt x 813.0375pt>
 File: journey_maps/ChloeMartin_JourneyMap_low.png Graphic file (type png)
 <use journey_maps/ChloeMartin_JourneyMap_low.png>
-Package pdftex.def Info: journey_maps/ChloeMartin_JourneyMap_low.png  used on input line 637.
+Package pdftex.def Info: journey_maps/ChloeMartin_JourneyMap_low.png  used on input line 593.
 (pdftex.def)             Requested size: 366.619pt x 250.38902pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 637.
+(caption)                particular \caption on input line 593.
 See the caption package documentation for explanation.
 
 LaTeX Font Info:    Font shape `T1/LinuxLibertineT-TLF/b/it' will be
-(Font)              scaled to size 9.0pt on input line 637.
+(Font)              scaled to size 9.0pt on input line 593.
 
-Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 639.
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 595.
 
-<journey_maps/SarahPeters_JourneyMap_low.png, id=384, 1190.4475pt x 890.32625pt>
+<journey_maps/SarahPeters_JourneyMap_low.png, id=372, 1190.4475pt x 890.32625pt>
 File: journey_maps/SarahPeters_JourneyMap_low.png Graphic file (type png)
 <use journey_maps/SarahPeters_JourneyMap_low.png>
-Package pdftex.def Info: journey_maps/SarahPeters_JourneyMap_low.png  used on input line 647.
+Package pdftex.def Info: journey_maps/SarahPeters_JourneyMap_low.png  used on input line 603.
 (pdftex.def)             Requested size: 368.29016pt x 275.44128pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 647.
+(caption)                particular \caption on input line 603.
 See the caption package documentation for explanation.
 
 
 
-[11.11
+[10.10
 
 {c:/texlive/2024/texmf-dist/fonts/enc/dvips/libertine/lbtn_ki75ao.enc} <./journey_maps/ChloeMartin_JourneyMap_low.png> <./journey_maps/SarahPeters_JourneyMap_low.png>]
-<journey_maps/JamesDavid_JourneyMap_low.png, id=393, 1190.4475pt x 870.25125pt>
+<journey_maps/JamesDavid_JourneyMap_low.png, id=381, 1190.4475pt x 870.25125pt>
 File: journey_maps/JamesDavid_JourneyMap_low.png Graphic file (type png)
 <use journey_maps/JamesDavid_JourneyMap_low.png>
-Package pdftex.def Info: journey_maps/JamesDavid_JourneyMap_low.png  used on input line 657.
+Package pdftex.def Info: journey_maps/JamesDavid_JourneyMap_low.png  used on input line 613.
 (pdftex.def)             Requested size: 405.03754pt x 296.09398pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 657.
+(caption)                particular \caption on input line 613.
 See the caption package documentation for explanation.
 
 
 
-[12.12 <./journey_maps/JamesDavid_JourneyMap_low.png>]
-<lofi/Login_Signup_low.png, id=400, 1951.29pt x 1090.0725pt>
+[11.11 <./journey_maps/JamesDavid_JourneyMap_low.png>]
+<lofi/Login_Signup_low.png, id=388, 1951.29pt x 1090.0725pt>
 File: lofi/Login_Signup_low.png Graphic file (type png)
 <use lofi/Login_Signup_low.png>
-Package pdftex.def Info: lofi/Login_Signup_low.png  used on input line 670.
+Package pdftex.def Info: lofi/Login_Signup_low.png  used on input line 626.
 (pdftex.def)             Requested size: 470.64156pt x 262.92012pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 670.
+(caption)                particular \caption on input line 626.
 See the caption package documentation for explanation.
 
 
-Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 672.
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 628.
 
-<lofi/Menu_low.png, id=401, 2346.7675pt x 1113.15875pt>
+<lofi/Menu_low.png, id=389, 2346.7675pt x 1113.15875pt>
 File: lofi/Menu_low.png Graphic file (type png)
 <use lofi/Menu_low.png>
-Package pdftex.def Info: lofi/Menu_low.png  used on input line 680.
+Package pdftex.def Info: lofi/Menu_low.png  used on input line 636.
 (pdftex.def)             Requested size: 506.264pt x 240.13977pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 680.
+(caption)                particular \caption on input line 636.
 See the caption package documentation for explanation.
 
 
 
-[13.13 <./lofi/Login_Signup_low.png> <./lofi/Menu_low.png>]
-<lofi/Core UI_low.png, id=410, 2954.03625pt x 1159.33125pt>
+[12.12 <./lofi/Login_Signup_low.png> <./lofi/Menu_low.png>]
+<lofi/Core UI_low.png, id=397, 2954.03625pt x 1159.33125pt>
 File: lofi/Core UI_low.png Graphic file (type png)
 <use lofi/Core UI_low.png>
-Package pdftex.def Info: lofi/Core UI_low.png  used on input line 690.
+Package pdftex.def Info: lofi/Core UI_low.png  used on input line 646.
 (pdftex.def)             Requested size: 506.28134pt x 198.69348pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 690.
+(caption)                particular \caption on input line 646.
 See the caption package documentation for explanation.
 
 
-Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 692.
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 648.
 
-<lofi/Route Planning_low.png, id=411, 2218.2875pt x 1089.06876pt>
+<lofi/Route Planning_low.png, id=398, 2218.2875pt x 1089.06876pt>
 File: lofi/Route Planning_low.png Graphic file (type png)
 <use lofi/Route Planning_low.png>
-Package pdftex.def Info: lofi/Route Planning_low.png  used on input line 700.
+Package pdftex.def Info: lofi/Route Planning_low.png  used on input line 656.
 (pdftex.def)             Requested size: 506.269pt x 248.55287pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 700.
+(caption)                particular \caption on input line 656.
 See the caption package documentation for explanation.
 
 
 
-[14.14 <./lofi/Core UI_low.png> <./lofi/Route Planning_low.png>]
-<hifi/LoginSignUp.png, id=420, 2816.5225pt x 1277.77374pt>
+[13.13 <./lofi/Core UI_low.png> <./lofi/Route Planning_low.png>]
+<hifi/LoginSignUp.png, id=408, 2816.5225pt x 1277.77374pt>
 File: hifi/LoginSignUp.png Graphic file (type png)
 <use hifi/LoginSignUp.png>
-Package pdftex.def Info: hifi/LoginSignUp.png  used on input line 713.
+Package pdftex.def Info: hifi/LoginSignUp.png  used on input line 669.
 (pdftex.def)             Requested size: 506.26456pt x 229.6774pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 713.
+(caption)                particular \caption on input line 669.
 See the caption package documentation for explanation.
 
 
-Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 715.
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 671.
 
-<hifi/Menu.png, id=421, 3162.81625pt x 1196.47pt>
+<hifi/Menu.png, id=409, 3162.81625pt x 1196.47pt>
 File: hifi/Menu.png Graphic file (type png)
 <use hifi/Menu.png>
-Package pdftex.def Info: hifi/Menu.png  used on input line 723.
+Package pdftex.def Info: hifi/Menu.png  used on input line 679.
 (pdftex.def)             Requested size: 506.25398pt x 191.51213pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 723.
+(caption)                particular \caption on input line 679.
 See the caption package documentation for explanation.
 
 
 
-[15.15 <./hifi/LoginSignUp.png> <./hifi/Menu.png>]
-<hifi/Core UI.png, id=429, 4576.43083pt x 1343.0175pt>
+[14.14 <./hifi/LoginSignUp.png> <./hifi/Menu.png>]
+<hifi/Core UI.png, id=417, 4576.43083pt x 1343.0175pt>
 File: hifi/Core UI.png Graphic file (type png)
 <use hifi/Core UI.png>
-Package pdftex.def Info: hifi/Core UI.png  used on input line 733.
+Package pdftex.def Info: hifi/Core UI.png  used on input line 689.
 (pdftex.def)             Requested size: 506.27202pt x 148.57259pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 733.
+(caption)                particular \caption on input line 689.
 See the caption package documentation for explanation.
 
 
-Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 735.
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 691.
 
-<hifi/Route Planning.png, id=430, 2188.175pt x 1276.77pt>
+<hifi/Route Planning.png, id=418, 2188.175pt x 1276.77pt>
 File: hifi/Route Planning.png Graphic file (type png)
 <use hifi/Route Planning.png>
-Package pdftex.def Info: hifi/Route Planning.png  used on input line 743.
+Package pdftex.def Info: hifi/Route Planning.png  used on input line 699.
 (pdftex.def)             Requested size: 450.58212pt x 262.90846pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 743.
+(caption)                particular \caption on input line 699.
 See the caption package documentation for explanation.
 
 
 
-[16.16 <./hifi/Core UI.png> <./hifi/Route planning.png>]
+[15.15 <./hifi/Core UI.png> <./hifi/Route planning.png>]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 803.
+(caption)                particular \caption on input line 759.
+See the caption package documentation for explanation.
+
+
+
+[16.16]
+<user_flows/Login_Signup_low.png, id=431, 895.345pt x 645.41125pt>
+File: user_flows/Login_Signup_low.png Graphic file (type png)
+<use user_flows/Login_Signup_low.png>
+Package pdftex.def Info: user_flows/Login_Signup_low.png  used on input line 772.
+(pdftex.def)             Requested size: 506.295pt x 364.97318pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 772.
+See the caption package documentation for explanation.
+
+
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 774.
+
+<user_flows/CoreUI_low.png, id=432, 1486.55376pt x 954.56625pt>
+File: user_flows/CoreUI_low.png Graphic file (type png)
+<use user_flows/CoreUI_low.png>
+Package pdftex.def Info: user_flows/CoreUI_low.png  used on input line 782.
+(pdftex.def)             Requested size: 506.295pt x 325.10173pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 782.
+See the caption package documentation for explanation.
+
+
+
+[17.17 <./user_flows/Login_Signup_low.png>]
+
+[18.18 <./user_flows/CoreUI_low.png>]
+<user_flows/Menu_low.png, id=446, 1052.93375pt x 885.3075pt>
+File: user_flows/Menu_low.png Graphic file (type png)
+<use user_flows/Menu_low.png>
+Package pdftex.def Info: user_flows/Menu_low.png  used on input line 792.
+(pdftex.def)             Requested size: 506.295pt x 425.69925pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 792.
+See the caption package documentation for explanation.
+
+
+Class acmart Warning: \vspace should only be used to provide space above/below surrounding objects on input line 794.
+
+<user_flows/RoutePlanning_low.png, id=447, 854.19125pt x 695.59875pt>
+File: user_flows/RoutePlanning_low.png Graphic file (type png)
+<use user_flows/RoutePlanning_low.png>
+Package pdftex.def Info: user_flows/RoutePlanning_low.png  used on input line 802.
+(pdftex.def)             Requested size: 506.295pt x 412.289pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 802.
 See the caption package documentation for explanation.
 
 
@@ -1459,31 +1477,33 @@ Class acmart Warning: CCS concepts are mandatory for papers over two pages.
 
 
 
+[19.19 <./user_flows/Menu_low.png>]
+
 (c:/texlive/2024/texmf-dist/tex/generic/stringenc/se-pdfdoc.def
 File: se-pdfdoc.def 2019/11/29 v1.12 stringenc: PDFDocEncoding
 ) (c:/texlive/2024/texmf-dist/tex/generic/stringenc/se-utf8.def
 File: se-utf8.def 2019/11/29 v1.12 stringenc: UTF-8
-) [17.17] (./final_report.aux)
+) [20.20 <./user_flows/RoutePlanning_low.png>] (./final_report.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `final_report.out' has not changed.
-(rerunfilecheck)             Checksum: 19C8BF5A83C19A3978B63A1D8A354654;8594.
+(rerunfilecheck)             Checksum: F79C006F94AF481E0312B789F7DE0F69;8594.
  ) 
 Here is how much of TeX's memory you used:
- 23088 strings out of 473201
- 380307 string characters out of 5720293
- 873410 words of memory out of 5000000
- 45302 multiletter control sequences out of 15000+600000
- 688951 words of font info for 320 fonts, out of 8000000 for 9000
+ 23086 strings out of 473201
+ 380179 string characters out of 5720293
+ 867657 words of memory out of 5000000
+ 45303 multiletter control sequences out of 15000+600000
+ 688287 words of font info for 318 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
  90i,12n,131p,1561b,640s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/libertine/LinBiolinumTB.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/libertine/LinBiolinumTI.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/libertine/LinLibertineT.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/libertine/LinLibertineTB.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/libertine/LinLibertineTBI.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/libertine/LinLibertineTI.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/newtx/txsym.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
-Output written on final_report.pdf (17 pages, 9120815 bytes).
+Output written on final_report.pdf (20 pages, 9118508 bytes).
 PDF statistics:
- 520 PDF objects out of 1000 (max. 8388607)
- 418 compressed objects within 5 object streams
+ 537 PDF objects out of 1000 (max. 8388607)
+ 432 compressed objects within 5 object streams
  118 named destinations out of 1000 (max. 500000)
  58354 words of extra memory for PDF output out of 61914 (max. 10000000)
 
