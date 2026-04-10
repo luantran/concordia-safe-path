@@ -14,7 +14,8 @@
 \renewcommand{\bibfont}{\normalsize}
 
 \acmConference[SOEN 6751]{Human Computer Interaction Design}{Winter 2026}{Concordia University, Montreal, QC}
-
+\usepackage[table]{xcolor}
+\usepackage{colortbl}      
 \usepackage{fancyhdr}
 \usepackage{array}
 \usepackage{multirow}
@@ -25,8 +26,7 @@
 \usepackage{pdflscape}
 \usepackage{float}
 \usepackage{capt-of}
-\usepackage[table]{xcolor}
-\usepackage{colortbl}
+
 
 \raggedbottom
 
@@ -375,12 +375,11 @@ Together, these design decisions create a calm, accessible, and visually clear i
 \section{System Functionality}
 \label{sec:functionality}
  
-The screens presented in this section are screenshots taken directly from the functional Android application, representing the end result of the design process described in Section~\ref{sec:methodology}. The high-fidelity Figma prototypes served as the direct reference for implementation: layout, color system, typography, and interaction patterns were carried through from design into code with minimal deviation. Where implementation constraints required adjustments, the underlying design rationale --- calm technology, WCAG AA compliance, and reduced cognitive load --- remained the guiding principle.
+The screens in this section show the final product of the design process outlined in Section 3. They are screenshots taken straight from the working Android application. The layout, color scheme, typography, and interaction patterns were all faithfully translated from design into code using the high-fidelity Figma prototypes. The basic design rationale such as calm technology, WCAG AA compliance, and less cognitive load, remained the guiding concept when implementation restrictions required modifications.
  
-Concordia Safe Path is implemented as a cross-platform mobile application targeting Android, built with React Native and Expo Router. Expo Router provides a file-based navigation architecture suited to the multi-screen structure of the system. The backend is powered by Supabase, which provides real-time database capabilities, user authentication, and storage built on PostgreSQL. Row Level Security (RLS) policies enforce role-based access control at the database level, ensuring that staff-only actions such as incident verification cannot be performed by student accounts at the API level. Campus map rendering, routing, and incident visualization are handled through the Google Maps SDK via the \texttt{react-native-maps} library. Production builds are distributed as APKs via EAS Build.
+Concordia Safe Path is a cross-platform mobile application targeting Android that uses React Native and ExpoRouter. Expo Router provides a file-based navigation architecture suited to the multi-screen structure of the system. The backend is powered by Supabase, which provides real-time database capabilities, user authentication, and storage built on PostgreSQL. RowLevel Security (RLS) policies enforce role-based access control at the database level, ensuring that staff-only actions such as incident verification cannot be performed by student accounts at the API level. Campus map rendering, routing, and incident visualization are handled with the Google Maps SDK via the react-native-maps library. Production builds are distributed as APKs via EAS Build.
  
-Development followed standard software engineering practices throughout. The codebase is hosted on GitHub at \url{https://github.com/luantran/concordia-safe-path}, with all feature work carried out on dedicated branches and integrated into the main branch exclusively through pull requests. Each pull request required a written description, screenshots of affected screens, and at least one team member review before merging. A shared pull request template enforced consistency across contributions. Work was tracked using GitHub Projects with a Kanban board, allowing the team to coordinate tasks across the six contributors and maintain visibility into what was in progress, under review, and complete. This workflow ensured that the codebase remained stable and reviewable at every stage of development.
- 
+Development process followed standard software engineering practices throughout this project. The codebase is hosted on GitHub at https://github.com/luantran/concordia-safe-path, with all feature work carried out on dedicated branches and integrated into the main branch exclusively through pull requests. Each pull request required a written description, screenshots of affected screens, and at least one team member toreview before merging with the working code. Using the same pull request template enforced consistency across contributions and made it easier to review new code.  Work was tracked using GitHub Projects with a Kanban board, allowing the team to coordinate tasks between the members and maintain visibility into what was in progress, under review, and complete. This workflow ensured that the codebase remained stable and reviewable at every stage of development by any member. 
 \subsection{Authentication and Onboarding}
  
 \begin{figure}[H]
