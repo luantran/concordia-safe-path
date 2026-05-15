@@ -39,3 +39,70 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+.env
+diff.txt
+notes
+output.txt
+proj.zip
+.idea/.gitignore
+.idea/concordia_safe_path.iml
+.idea/modules.xml
+.idea/vcs.xml
+assets/old_building_marker.png
+assets/old_building_marker@2x.png
+assets/old_building_marker@3x.png
+assets/img/concordia_logo_dark.png
+assets/img/mcgill_logo.png
+final_report/final_report.aux
+final_report/final_report.fdb_latexmk
+final_report/final_report.fls
+final_report/final_report.log
+final_report/final_report.out
+final_report/final_report.pdf
+final_report/final_report.synctex.gz
+final_report/final_report.tex
+progress_report/ACM-Reference-Format.bst
+progress_report/acmart.cls
+progress_report/progress_report.aux
+progress_report/progress_report.bbl
+progress_report/progress_report.blg
+progress_report/progress_report.fdb_latexmk
+progress_report/progress_report.fls
+progress_report/progress_report.log
+progress_report/progress_report.out
+progress_report/progress_report.pdf
+progress_report/progress_report.synctex.gz
+progress_report/progress_report.tex
+progress_report/references.bib
+progress_report/empathy_maps/chloe martin - empathy maps.png
+progress_report/empathy_maps/james david - empathy maps.png
+progress_report/empathy_maps/sarah peters - empathy maps.png
+progress_report/hifi/Core UI.png
+progress_report/hifi/LoginSignUp.png
+progress_report/hifi/Menu.png
+progress_report/hifi/Route planning.png
+progress_report/journey_maps/ChloeMartin_JourneyMap_low.png
+progress_report/journey_maps/ChloeMartin_JourneyMap.png
+progress_report/journey_maps/JamesDavid_JourneyMap_low.png
+progress_report/journey_maps/JamesDavid_JourneyMap.png
+progress_report/journey_maps/SarahPeters_JourneyMap_low.png
+progress_report/journey_maps/SarahPeters_JourneyMap.png
+progress_report/lofi/Core UI_low.png
+progress_report/lofi/Core UI.png
+progress_report/lofi/Login_Signup_low.png
+progress_report/lofi/Login_Signup.png
+progress_report/lofi/Menu_low.png
+progress_report/lofi/Menu.png
+progress_report/lofi/Route Planning_low.png
+progress_report/lofi/Route Planning.png
+progress_report/personas/ChloeMartin_Persona1.png
+progress_report/personas/JamesDavid_Persona3.png
+progress_report/personas/SarahPeters_Persona2.png
+progress_report/user_flows/CoreUI_low.png
+progress_report/user_flows/CoreUI.png
+progress_report/user_flows/Login_Signup_low.png
+progress_report/user_flows/Login_Signup.png
+progress_report/user_flows/Menu_low.png
+progress_report/user_flows/Menu.png
+progress_report/user_flows/RoutePlanning_low.png
+progress_report/user_flows/RoutePlanning.png
