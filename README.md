@@ -1,4 +1,59 @@
-A React Native mobile application designed to help Concordia University students navigate campus safely during disruptions such as protests, construction, and emergencies.
+# Concordia Safe Path
+
+A campus safety mobile app for Concordia University students — real-time incident reporting, proximity alerts, and accessible route planning during campus disruptions.
+
+> Built as part of SOEN 6751 (Human-Computer Interaction) at Concordia University, Winter 2026.
+
+---
+
+## Screenshots
+
+<p float="left">
+  <img src="assets/screenshots/map_callout.jpg" width="15%" />
+  <img src="assets/screenshots/proximity_alert.jpg" width="15%" />
+  <img src="assets/screenshots/incident_detail.jpg" width="15%" />
+  <img src="assets/screenshots/route_safe.jpg" width="15%" />
+  <img src="assets/screenshots/safe_zone_now.jpg" width="15%" />
+  <img src="assets/screenshots/emergency.jpg" width="15%" />
+</p>
+
+---
+ 
+## Features
+ 
+- **Live incident map** — see what's happening on campus right now, with color-coded markers and live updates
+- **Proximity alerts** — get a heads up as you approach an incident, escalating to a full alert if you enter the affected zone
+- **Safe Zone Now** — one tap gets you a route out when you're in a danger zone
+- **Crowdsourced reporting** — quickly report an incident by type, severity, and location; upvote or downvote existing ones
+- **Emergency resources** — campus security, mental health support, 911, and your personal emergency contacts, all in one place
+- **Offline support** — cached data stays visible when you lose connection, so you're never left with a blank screen
+- **Role-based accounts** — students and staff see different views and controls depending on their role
+- **Accessibility** — built to WCAG AA, with screen reader support, non-color indicators, and sufficient contrast throughout
+
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | React Native + Expo Router |
+| Backend | Supabase (PostgreSQL, Auth, Realtime, RLS) |
+| Maps | Google Maps SDK via react-native-maps |
+| Build | EAS Build |
+
+---
+
+## Team
+
+| Name | Student ID |
+|---|---|
+| Mary Ann Ng Kwet Pin | 40336644 |
+| The-Luan Tran | 40321765 |
+| Pirasana Ariyam | 40188773 |
+| Honey Sharma | 40292445 |
+| Siva Sankar Reddy Veluri | 40162043 |
+| Lokesh Kommalapati | 40301947 |
 
 ---
 
@@ -10,17 +65,17 @@ Make sure you have the following installed before starting:
 - [Expo CLI](https://docs.expo.dev/get-started/installation/): `npm install -g expo-cli`
 - [Git](https://git-scm.com/)
 - Either:
-    - **Expo Go** app on your physical device ([iOS](https://apps.apple.com/app/expo-go/id982107779) / [Android](https://play.google.com/store/apps/details?id=host.exp.exponent))
-    - **Android Emulator** via [Android Studio](https://developer.android.com/studio)
-      - https://docs.expo.dev/workflow/android-studio-emulator/
-    - **iOS Simulator** via Xcode (macOS only)
-      - https://docs.expo.dev/workflow/ios-simulator/
----
+  - **Expo Go** app on your physical device ([iOS](https://apps.apple.com/app/expo-go/id982107779) / [Android](https://play.google.com/store/apps/details?id=host.exp.exponent))
+  - **Android Emulator** via [Android Studio](https://developer.android.com/studio)
+  - **iOS Simulator** via Xcode (macOS only)
 
+---
 
 ## Supabase Database Setup
 
-The app requires a Supabase project with the following table. Find the schema.sql file in the supabase folder and paste the content in the **Supabase SQL Editor**.
+The app requires a Supabase project with the schema defined in `supabase/schema.sql`. Paste the contents of that file into the **Supabase SQL Editor** to set up all tables, RLS policies, and triggers.
+
+---
 
 ## Setup
 
@@ -43,18 +98,17 @@ EXPO_PUBLIC_SUPABASE_URL=your_supabase_project_url
 EXPO_PUBLIC_SUPABASE_KEY=your_supabase_anon_key
 ```
 
-Get these values from the Supabase dashboard:
+Get these from your Supabase dashboard:
 1. Go to https://supabase.com and open your project
-2. On the home page, you'll have a url, it should look like (https://****.supabase.co), that's the one, replace that in your env file  → paste as EXPO_PUBLIC_SUPABASE_URL
-2. Click **Project Settings** (gear icon, bottom of left sidebar)
-3. Click **API** under the Configuration section
-5. Copy **publishable** key under Project API keys → paste as EXPO_PUBLIC_SUPABASE_KEY
+2. The URL on the home page (`https://****.supabase.co`) is your `EXPO_PUBLIC_SUPABASE_URL`
+3. Go to **Project Settings → API → Project API keys** and copy the **publishable** key as `EXPO_PUBLIC_SUPABASE_KEY`
+
 **4. Start the app**
 ```bash
 npx expo start
 ```
 
-Make sure your phones and computers are on the same wifi and that your computer "trusts" this wifi (choose "I trust this wifi" in your wifi setting). Anti-virus can complicate things. Also
+Make sure your phone and computer are on the same WiFi network.
 
 ---
 
@@ -65,9 +119,6 @@ Make sure your phones and computers are on the same wifi and that your computer 
 | Android Emulator | Press `a` in terminal | Emulator must be running first |
 | iOS Simulator | Press `i` in terminal | macOS only |
 | Physical device | Scan QR code with Expo Go | Must be on same WiFi network |
-Not sure about the iOS one, tbh
----
-
 
 ---
 
@@ -86,50 +137,8 @@ app/
 ├── _layout.jsx       ← Root layout + providers
 
 components/           ← Reusable themed components
-contexts/             ← React context (User, Incidents)
-hooks/                ← useUser, useIncidents
+contexts/             ← React context (User, Incidents, Theme, Network, NavigationOverride)
+hooks/                ← useUser, useIncidents, useProximityAlerts, useSafeZone
 lib/                  ← Supabase client
-constants/            ← Colors/theme
+constants/            ← Colors, theme, map styles
 ```
-
----
-
-## Common Pitfalls
-
-**Environment variables not loading**
-- Make sure the file is named exactly `.env` (not `.env.local`)
-- All variables must start with `EXPO_PUBLIC_`
-- Restart the bundler completely after editing: `npx expo start --clear`
-
-**`supabaseUrl is required` error**
-- Your `.env` file isn't being read — see above
-
-**Blank screen on emulator**
-- Press `a` in the terminal to explicitly open on Android
-- Make sure the emulator is fully booted before running `expo start`
-
-**Location not working on emulator**
-- Set a mock location in the emulator: **⋮ → Location** and enter coordinates manually
-- Concordia SGW campus: `45.4972, -73.5789`
-
-**Map not showing / slow to load**
-- This is normal on first load — map tiles need to download
-- On emulator, map performance is slower than a real device
-
-**Incidents not updating in real time**
-- Make sure Realtime is enabled for the `incidents` table in Supabase: **Database → Publications → supabase_realtime**
-
-**`Cannot read property 'filter' of null`**
-- Initial state for incidents must be `[]` not `null` in `IncidentsContext.jsx`
-
-**Rules of Hooks error on `ThemedView`**
-- `useSafeAreaInsets` must always be called unconditionally at the top of the component — never after an early return
-
----
-
-## Tech Stack
-
-- [Expo](https://expo.dev/) + [Expo Router](https://expo.github.io/router/) — React Native framework & file-based routing
-- [Supabase](https://supabase.com/) — Backend, authentication, and real-time database
-- [react-native-maps](https://github.com/react-native-maps/react-native-maps) — Map rendering
-- [expo-location](https://docs.expo.dev/versions/latest/sdk/location/) — Device GPS
